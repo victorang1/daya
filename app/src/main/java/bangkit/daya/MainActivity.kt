@@ -1,4 +1,4 @@
-package bangkit.bimap
+package bangkit.daya
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
