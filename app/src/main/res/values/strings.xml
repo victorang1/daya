@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">daya</string>
+    <string name="text_sign_up">Sign Up</string>
+    <string name="text_login">Log In</string>
 </resources>
