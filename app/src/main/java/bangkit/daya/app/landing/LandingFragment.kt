@@ -37,6 +37,7 @@ class LandingFragment : Fragment() {
         binding.viewPager.adapter = mAdapter
         binding.viewPager.setPageTransformer(DepthTransformer())
         binding.circleIndicator.setViewPager(binding.viewPager)
+        mAdapter.registerAdapterDataObserver(binding.circleIndicator.adapterDataObserver)
     }
 
     private fun initData() {
