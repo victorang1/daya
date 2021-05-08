@@ -24,5 +24,20 @@
     <fragment
         android:id="@+id/landingFragment"
         android:name="bangkit.daya.app.landing.LandingFragment"
-        android:label="LandingFragment" />
+        android:label="LandingFragment" >
+        <action
+            android:id="@+id/action_landingFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
+        <action
+            android:id="@+id/action_landingFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="bangkit.daya.app.signup.SignUpFragment"
+        android:label="SignUpFragment" />
+    <fragment
+        android:id="@+id/logInFragment"
+        android:name="bangkit.daya.login.LogInFragment"
+        android:label="LogInFragment" />
 </navigation>

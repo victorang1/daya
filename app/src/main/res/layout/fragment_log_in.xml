@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".app.login.LoginFragment">
+    >
 
     <ImageButton
         android:layout_width="34dp"
@@ -26,7 +26,7 @@
         android:layout_marginTop="96dp"
         android:fontFamily="@font/comfortaa_regular"
         android:text="@string/text_login"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"

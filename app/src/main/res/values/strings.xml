@@ -5,5 +5,5 @@
     <string name="LOGIN">LOG IN</string>
     <string name="Register">Register</string>
     <string name="NEXT">NEXT</string>
-    <string name="explanation">By signing up, you agree to Photo's Terms of Service and Privacy Policy</string>
+    <string name="explanation">By signing up, you agree to Photo\'s Terms of Service and Privacy Policy</string>
 </resources>
