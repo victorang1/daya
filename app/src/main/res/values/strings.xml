@@ -2,4 +2,8 @@
     <string name="app_name">daya</string>
     <string name="text_sign_up">Sign Up</string>
     <string name="text_login">Log In</string>
+    <string name="LOGIN">LOG IN</string>
+    <string name="Register">Register</string>
+    <string name="NEXT">NEXT</string>
+    <string name="explanation">By signing up, you agree to Photo's Terms of Service and Privacy Policy</string>
 </resources>
