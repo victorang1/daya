@@ -1,69 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageButton
-        android:layout_width="34dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/white"
-        android:elevation="4dp"
-        android:outlineProvider="none"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_baseline_undo_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/tv_register"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:fontFamily="@font/comfortaa_regular"
-        android:text="@string/Register"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </data>
 
-    <EditText
-        android:id="@+id/et_reg_name"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/border"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_register" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/et_reg_pass"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/border"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_reg_name" />
+        <ImageButton
+            android:layout_width="34dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:outlineProvider="none"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_baseline_undo_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/dark_gray"
-        android:text="@string/NEXT"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_reg_pass" />
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="96dp"
+            android:fontFamily="@font/comfortaa_regular"
+            android:text="@string/Register"
+            android:textSize="40dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_reg_name"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_register" />
+
+        <EditText
+            android:id="@+id/et_reg_pass"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_reg_name" />
+
+        <Button
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/dark_gray"
+            android:text="@string/NEXT"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_reg_pass" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
