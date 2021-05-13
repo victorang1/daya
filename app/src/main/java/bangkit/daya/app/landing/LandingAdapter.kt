@@ -7,9 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import bangkit.daya.databinding.LandingItemLayoutBinding
 import bangkit.daya.model.LandingItem
 
-/**
- * Created by victor on 26-Apr-21 8:13 PM.
- */
 class LandingAdapter(private val mContext: Context) :
     RecyclerView.Adapter<LandingAdapter.LandingViewHolder>() {
 

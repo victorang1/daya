@@ -6,22 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import bangkit.daya.databinding.FragmentSignUpBinding
-import bangkit.daya.model.User
+import androidx.navigation.fragment.navArgs
+import bangkit.daya.databinding.FragmentSignUpTwoBinding
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SignUpFragment : Fragment(), View.OnClickListener {
+class SignUpTwoFragment : Fragment(), View.OnClickListener {
 
-    private lateinit var binding: FragmentSignUpBinding
+    private lateinit var binding: FragmentSignUpTwoBinding
     private val signUpViewModel: SignUpViewModel by viewModel()
+    private val args: SignUpTwoFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSignUpBinding.inflate(inflater, container, false)
-        binding.user = User()
+        binding = FragmentSignUpTwoBinding.inflate(inflater, container, false)
+        binding.user = args.user
         return binding.root
     }
 
@@ -34,13 +35,13 @@ class SignUpFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view) {
             binding.btnBack -> findNavController().navigateUp()
-            binding.btnNext -> signUpViewModel.registerUser(binding.user)
+            binding.btnSignUp -> signUpViewModel.register(binding.user)
         }
     }
 
     private fun setListener() {
         binding.btnBack.setOnClickListener(this)
-        binding.btnNext.setOnClickListener(this)
+        binding.btnSignUp.setOnClickListener(this)
     }
 
     private fun setObserver() {
@@ -48,17 +49,6 @@ class SignUpFragment : Fragment(), View.OnClickListener {
             event.getContentIfNotHandled()?.let { errorMessage ->
                 Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT)
                     .show()
-            }
-        }
-
-        signUpViewModel.registerEvent.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { signUpEvent ->
-                when (signUpEvent) {
-                    REDIRECT_TO_SECOND_STEP -> {
-                        val direction = SignUpFragmentDirections.actionSignUpFragmentToSignUpTwoFragment(binding.user!!)
-                        findNavController().navigate(direction)
-                    }
-                }
             }
         }
     }
