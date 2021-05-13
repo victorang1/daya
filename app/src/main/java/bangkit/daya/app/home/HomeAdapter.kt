@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import bangkit.daya.databinding.DashboardItemBinding
 import bangkit.daya.model.DashboardItem
 
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.DashboardViewHolder>() {
+class HomeAdapter(private val onClick: (destinationId: Int) -> Unit) : RecyclerView.Adapter<HomeAdapter.DashboardViewHolder>() {
 
     private val features: MutableList<DashboardItem> = mutableListOf()
 
@@ -33,6 +33,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.DashboardViewHolder>() {
 
         fun bind(item: DashboardItem) {
             itemBinding.dashboardItem = item
+            itemBinding.root.setOnClickListener { onClick.invoke(item.destinationId) }
         }
     }
 }

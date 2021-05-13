@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import bangkit.daya.databinding.FragmentHomeBinding
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -13,7 +14,9 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModel()
-    private val homeAdapter: HomeAdapter by lazy { HomeAdapter() }
+    private val homeAdapter: HomeAdapter by lazy { HomeAdapter { destinationId ->
+        findNavController().navigate(destinationId)
+    }}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

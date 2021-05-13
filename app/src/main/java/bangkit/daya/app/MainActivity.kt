@@ -27,8 +27,7 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment -> binding.dashboardBottomMenu.visibility = View.VISIBLE
-                R.id.profileFragment -> binding.dashboardBottomMenu.visibility = View.VISIBLE
+                R.id.homeFragment, R.id.profileFragment -> binding.dashboardBottomMenu.visibility = View.VISIBLE
                 else -> binding.dashboardBottomMenu.visibility = View.GONE
             }
         }
