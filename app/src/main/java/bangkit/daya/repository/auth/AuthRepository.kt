@@ -1,7 +1,9 @@
 package bangkit.daya.repository.auth
 
+import bangkit.daya.model.User
+
 interface AuthRepository {
 
-    fun login()
-    fun register()
+    fun login(user: User)
+    fun register(user: User)
 }

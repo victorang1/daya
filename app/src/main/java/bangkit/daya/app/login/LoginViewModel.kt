@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bangkit.daya.model.User
-import bangkit.daya.repository.auth.AuthRepository
 import bangkit.daya.util.Event
 
-class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
+class LoginViewModel : ViewModel() {
 
     private val _snackBarText: MutableLiveData<Event<String>> = MutableLiveData()
     val snackBarText: LiveData<Event<String>> = _snackBarText
@@ -15,19 +14,21 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
     private val _loginEvent: MutableLiveData<Event<Int>> = MutableLiveData()
     val loginEvent: LiveData<Event<Int>> = _loginEvent
 
-    fun login(user: User?) {
-        if (isUserValid(user)) {
-            authRepository.login()
-            _loginEvent.value = Event(LOGIN_SUCCESS)
-        }
-        else {
+    fun isValid(user: User?): Boolean {
+        if (!isUserValid(user)) {
             _snackBarText.value = Event("All field must be input")
+            return false
         }
+        return true
     }
 
     private fun isUserValid(user: User?): Boolean {
         return user != null && user.email.isNotEmpty() && user.password.isNotEmpty()
     }
+
+    fun sendEvent(eventId: Int) {
+        _loginEvent.value = Event(eventId)
+    }
 }
 
-const val LOGIN_SUCCESS = 0
+const val LOGIN_SUCCESS: Int = 1

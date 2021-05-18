@@ -17,11 +17,19 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="bangkit.daya.app.profile.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment">
+
+    </fragment>
+
     <fragment
         android:id="@+id/arFragment"
         android:name="bangkit.daya.app.ar.ArFragment"
         android:label="fragment_ar"
         tools:layout="@layout/fragment_ar" />
+
+    <fragment
+        android:id="@+id/landingFragment"
+        android:name="bangkit.daya.app.landing.LandingFragment"
+        android:label="LandingFragment" />
 
 </navigation>

@@ -1,12 +1,14 @@
 package bangkit.daya.repository.auth
 
-class AuthRepositoryImpl : AuthRepository {
+import bangkit.daya.model.User
 
-    override fun login() {
+class AuthRepositoryImpl: AuthRepository {
+
+    override fun login(user: User) {
 
     }
 
-    override fun register() {
+    override fun register(user: User) {
 
     }
 }

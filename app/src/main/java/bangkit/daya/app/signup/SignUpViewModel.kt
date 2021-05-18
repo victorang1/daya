@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bangkit.daya.model.User
-import bangkit.daya.repository.auth.AuthRepository
 import bangkit.daya.util.Event
 
-class SignUpViewModel(private val authRepository: AuthRepository) : ViewModel() {
+class SignUpViewModel : ViewModel() {
 
     private val _snackBarText: MutableLiveData<Event<String>> = MutableLiveData()
     val snackBarText: LiveData<Event<String>> = _snackBarText
@@ -26,7 +25,7 @@ class SignUpViewModel(private val authRepository: AuthRepository) : ViewModel() 
 
     fun register(user: User?) {
         if (isSecondStepValid(user)) {
-            authRepository.register()
+//            authRepository.register(user!!)
             _registerEvent.value = Event(REGISTER_SUCCESS)
         }
         else {
