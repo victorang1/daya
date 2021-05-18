@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
     app:startDestination="@id/splashFragment">
 
@@ -19,6 +18,13 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_splashFragment_to_dashboard_graph"
+            app:destination="@id/dashboard_graph"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
     <fragment
@@ -35,9 +41,33 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="bangkit.daya.app.signup.SignUpFragment"
-        android:label="SignUpFragment" />
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_signUpFragment_to_signUpTwoFragment"
+            app:destination="@id/signUpTwoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/logInFragment"
-        android:name="bangkit.daya.login.LogInFragment"
-        android:label="LogInFragment" />
+        android:name="bangkit.daya.app.login.LogInFragment"
+        android:label="LogInFragment" >
+        <action
+            android:id="@+id/action_logInFragment_to_dashboard_graph"
+            app:destination="@id/dashboard_graph"
+            app:popUpTo="@id/landingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpTwoFragment"
+        android:name="bangkit.daya.app.signup.SignUpTwoFragment"
+        android:label="SignUpTwoFragment" >
+        <argument
+            android:name="user"
+            app:argType="bangkit.daya.model.User" />
+        <action
+            android:id="@+id/action_signUpTwoFragment_to_dashboard_graph"
+            app:destination="@id/dashboard_graph"
+            app:popUpTo="@id/landingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <include app:graph="@navigation/dashboard_graph" />
 </navigation>
