@@ -81,6 +81,53 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_btn_login_with_google"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="@dimen/dimen_24dp"
+            android:background="?android:attr/selectableItemBackground"
+            app:cardElevation="@dimen/dimen_4dp"
+            app:layout_constraintTop_toBottomOf="@id/btn_login"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_4dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_google_icon"
+                    android:layout_width="@dimen/dimen_48dp"
+                    android:layout_height="@dimen/dimen_48dp"
+                    android:src="@drawable/google_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <Button
+                    android:id="@+id/btn_login_with_google"
+                    style="?attr/materialButtonOutlinedStyle"
+                    app:strokeColor="@color/app_color"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark_gray"
+                    android:text="@string/text_sign_in_with_google"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_google_icon"
+                    app:layout_constraintTop_toTopOf="@id/iv_google_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_google_icon"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"

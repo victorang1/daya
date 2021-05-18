@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import bangkit.daya.R
+import bangkit.daya.app.signup.REGISTER_SUCCESS
 import bangkit.daya.databinding.FragmentLogInBinding
 import bangkit.daya.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -25,7 +26,7 @@ class LogInFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentLogInBinding
     private val loginViewModel: LoginViewModel by viewModel()
 
-    private lateinit var auth: FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
@@ -35,7 +36,7 @@ class LogInFragment : Fragment(), View.OnClickListener {
         binding = FragmentLogInBinding.inflate(layoutInflater, container, false)
         binding.user = User()
         initGoogleSignIn()
-        auth = FirebaseAuth.getInstance()
+        mAuth = FirebaseAuth.getInstance()
         return binding.root
     }
 
@@ -48,13 +49,8 @@ class LogInFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view) {
             binding.btnBack -> findNavController().navigateUp()
-            binding.btnLogin -> {
-                if (loginViewModel.isValid(binding.user)) {
-                    binding.progressBar.visibility = View.VISIBLE
-                    val signInIntent = googleSignInClient.signInIntent
-                    startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST)
-                }
-            }
+            binding.btnLogin -> loginDefault()
+            binding.btnLoginWithGoogle -> loginWithGoogle()
         }
     }
 
@@ -108,16 +104,43 @@ class LogInFragment : Fragment(), View.OnClickListener {
 
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
+        mAuth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 binding.progressBar.visibility = View.GONE
                 if (task.isSuccessful) {
-                    Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
                     loginViewModel.sendEvent(LOGIN_SUCCESS)
+                    Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(requireContext(), "Sign In Failed: ${task.exception}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun loginDefault() {
+        val user = binding.user
+        if (user != null && loginViewModel.isValid(user)) {
+            binding.progressBar.visibility = View.VISIBLE
+            mAuth.signInWithEmailAndPassword(user.email, user.password)
+                .addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        loginViewModel.sendEvent(LOGIN_SUCCESS)
+                        Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        Toast.makeText(requireContext(), "${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                    binding.progressBar.visibility = View.GONE
+                }
+        }
+    }
+
+    private fun loginWithGoogle() {
+        val user = binding.user
+        if (user != null && loginViewModel.isValid(user)) {
+            binding.progressBar.visibility = View.VISIBLE
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST)
+        }
     }
 
     companion object {

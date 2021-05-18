@@ -46,8 +46,10 @@
         android:name="bangkit.daya.app.signup.SignUpFragment"
         android:label="SignUpFragment" >
         <action
-            android:id="@+id/action_signUpFragment_to_signUpTwoFragment"
-            app:destination="@id/signUpTwoFragment" />
+            android:id="@+id/action_signUpFragment_to_dashboard_graph"
+            app:destination="@id/dashboard_graph"
+            app:popUpTo="@id/landingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/logInFragment"

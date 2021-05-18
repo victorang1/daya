@@ -13,4 +13,5 @@
     <dimen name="text_40sp">40sp</dimen>
     <dimen name="text_12dp">12dp</dimen>
     <dimen name="text_10sp">10sp</dimen>
+    <dimen name="dimen_4dp">4dp</dimen>
 </resources>

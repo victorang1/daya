@@ -13,4 +13,5 @@
     <string name="text_logout">Logout</string>
 
     <string name="text_deep_link_landing">daya://app_navigation_fragment_landing</string>
+    <string name="text_sign_in_with_google">Sign in with Google</string>
 </resources>

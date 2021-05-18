@@ -14,7 +14,7 @@ class LoginViewModel : ViewModel() {
     private val _loginEvent: MutableLiveData<Event<Int>> = MutableLiveData()
     val loginEvent: LiveData<Event<Int>> = _loginEvent
 
-    fun isValid(user: User?): Boolean {
+    fun isValid(user: User): Boolean {
         if (!isUserValid(user)) {
             _snackBarText.value = Event("All field must be input")
             return false
@@ -22,9 +22,7 @@ class LoginViewModel : ViewModel() {
         return true
     }
 
-    private fun isUserValid(user: User?): Boolean {
-        return user != null && user.email.isNotEmpty() && user.password.isNotEmpty()
-    }
+    private fun isUserValid(user: User): Boolean = user.email.isNotEmpty() && user.password.isNotEmpty()
 
     fun sendEvent(eventId: Int) {
         _loginEvent.value = Event(eventId)
