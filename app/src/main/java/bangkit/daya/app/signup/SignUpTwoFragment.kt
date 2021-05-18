@@ -35,7 +35,9 @@ class SignUpTwoFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view) {
             binding.btnBack -> findNavController().navigateUp()
-            binding.btnSignUp -> signUpViewModel.register(binding.user)
+            binding.btnSignUp -> {
+
+            }
         }
     }
 

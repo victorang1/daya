@@ -42,45 +42,129 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_back" />
 
-        <EditText
-            android:id="@+id/et_name"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/text_12dp"
-            android:layout_marginTop="@dimen/dimen_24dp"
-            android:background="@drawable/border"
+            android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginHorizontal="@dimen/dimen_24dp"
-            android:text="@={user.email}"
+            android:hint="@string/text_email"
+            android:textColorHint="@color/app_color"
+            app:boxStrokeColor="@color/app_color"
+            app:hintTextColor="@color/app_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_login" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_login"
+            >
 
-        <EditText
-            android:id="@+id/et_password"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={user.email}"
+                android:textColor="@color/app_color"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/text_12dp"
-            android:layout_marginTop="@dimen/dimen_8dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginHorizontal="@dimen/dimen_24dp"
-            android:inputType="textPassword"
-            android:background="@drawable/border"
-            android:text="@={user.password}"
+            android:hint="@string/text_password"
+            android:textColorHint="@color/app_color"
+            app:boxStrokeColor="@color/app_color"
+            app:hintTextColor="@color/app_color"
+            app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tl_email"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={user.password}"
+                android:inputType="textPassword"
+                android:textColor="@color/app_color"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginHorizontal="@dimen/dimen_24dp"
             android:background="@color/dark_gray"
             android:text="@string/LOGIN"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_password" />
+            app:layout_constraintTop_toBottomOf="@+id/tl_password" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_btn_login_with_google"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="@dimen/dimen_24dp"
+            android:background="?android:attr/selectableItemBackground"
+            app:cardElevation="@dimen/dimen_4dp"
+            app:layout_constraintTop_toBottomOf="@id/btn_login"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_4dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_google_icon"
+                    android:layout_width="@dimen/dimen_48dp"
+                    android:layout_height="@dimen/dimen_48dp"
+                    android:src="@drawable/google_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <Button
+                    android:id="@+id/btn_login_with_google"
+                    style="?attr/materialButtonOutlinedStyle"
+                    app:strokeColor="@color/app_color"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark_gray"
+                    android:text="@string/text_sign_in_with_google"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_google_icon"
+                    app:layout_constraintTop_toTopOf="@id/iv_google_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_google_icon"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

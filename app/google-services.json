@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "102893283349",
+    "firebase_url": "https://daya-b21-cap0034-default-rtdb.firebaseio.com",
+    "project_id": "daya-b21-cap0034",
+    "storage_bucket": "daya-b21-cap0034.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102893283349:android:4c516cdbb2605b42db861c",
+        "android_client_info": {
+          "package_name": "bangkit.daya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102893283349-ailim8iftneqah6ed5ijg6rf5cjgn43p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ9yRqvZD25uSiWF4tJcqBVe0N7Y0clVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102893283349-ailim8iftneqah6ed5ijg6rf5cjgn43p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

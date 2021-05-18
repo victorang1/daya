@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="name"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,15 +15,26 @@
         tools:context=".app.profile.ProfileFragment">
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/app_color"
             android:textSize="@dimen/text_40sp"
-            android:text="@string/hello_blank_fragment"
+            android:text="@{name}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <Button
+            android:id="@+id/btn_log_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_logout"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

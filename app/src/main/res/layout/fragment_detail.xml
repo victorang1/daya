@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_4dp"
                     android:layout_marginEnd="@dimen/dimen_4dp"
-                    android:textSize="@dimen/text_12dp"
+                    android:textSize="@dimen/dimen_12dp"
                     android:layout_gravity="center"
                     tools:text="@string/borobudur"/>
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_4dp"
                     android:layout_marginEnd="@dimen/dimen_4dp"
-                    android:textSize="@dimen/text_12dp"
+                    android:textSize="@dimen/dimen_12dp"
                     android:layout_gravity="center"
                     tools:text="@string/borobudur"/>
 
@@ -130,21 +130,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_12dp"
+                    android:textSize="@dimen/dimen_12dp"
                     tools:text ="@string/about_borobudur" />
 
             </androidx.cardview.widget.CardView>
 
-
-
         </RelativeLayout>
-
-
-
-
-
-
-
 
     </LinearLayout>
 

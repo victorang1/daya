@@ -6,11 +6,17 @@
     <string name="Register">Register</string>
     <string name="NEXT">NEXT</string>
     <string name="explanation">By signing up, you agree to Photo\'s Terms of Service and Privacy Policy</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_home">Home</string>
     <string name="text_profile">Profile</string>
     <string name="about">About</string>
     <string name="borobudur">CANDI BOROBUDUR</string>
     <string name="about_borobudur">Built in the 7th century during the reign of the Sailendra Dynasty, the temple design follows Javanese Buddhist architecture, which blends the Indonesian indigenous cult of ancestor worship and the Buddhist concept of attaining Nirvana</string>
+    <string name="text_logout">Logout</string>
+
+    <string name="text_deep_link_landing">daya://app_navigation_fragment_landing</string>
+    <string name="text_sign_in_with_google">Sign in with Google</string>
+    <string name="text_email">Email</string>
+    <string name="text_password">Password</string>
 </resources>

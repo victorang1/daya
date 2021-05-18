@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import bangkit.daya.R
 import bangkit.daya.databinding.FragmentSplashBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class SplashFragment : Fragment() {
 
@@ -17,7 +18,7 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentSplashBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -25,8 +26,15 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Handler(Looper.getMainLooper()).postDelayed({
-            findNavController().navigate(R.id.action_splashFragment_to_landingFragment)
+            handleUserNavigation()
         }, SPLASH_DELAY)
+    }
+
+    private fun handleUserNavigation() {
+        val resId =
+            if (FirebaseAuth.getInstance().currentUser != null) R.id.action_splashFragment_to_dashboard_graph
+            else R.id.action_splashFragment_to_landingFragment
+        findNavController().navigate(resId)
     }
 
     companion object {
