@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="dimen_4dp">4dp</dimen>
     <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_12dp">12dp</dimen>
     <dimen name="dimen_16dp">16dp</dimen>
     <dimen name="dimen_24dp">24dp</dimen>
+    <dimen name="dimen_48dp">48dp</dimen>
     <dimen name="dimen_64dp">64dp</dimen>
     <dimen name="default_image_size">140dp</dimen>
 
     <!-- Text Dimens -->
-    <dimen name="text_14sp">14sp</dimen>
-    <dimen name="text_64sp">64sp</dimen>
-    <dimen name="dimen_48dp">48dp</dimen>
-    <dimen name="text_40sp">40sp</dimen>
-    <dimen name="text_12dp">12dp</dimen>
     <dimen name="text_10sp">10sp</dimen>
-    <dimen name="dimen_4dp">4dp</dimen>
+    <dimen name="text_14sp">14sp</dimen>
+    <dimen name="text_40sp">40sp</dimen>
+    <dimen name="text_64sp">64sp</dimen>
 </resources>

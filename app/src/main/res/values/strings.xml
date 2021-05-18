@@ -6,7 +6,7 @@
     <string name="Register">Register</string>
     <string name="NEXT">NEXT</string>
     <string name="explanation">By signing up, you agree to Photo\'s Terms of Service and Privacy Policy</string>
-    >
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_home">Home</string>
     <string name="text_profile">Profile</string>
@@ -14,4 +14,6 @@
 
     <string name="text_deep_link_landing">daya://app_navigation_fragment_landing</string>
     <string name="text_sign_in_with_google">Sign in with Google</string>
+    <string name="text_email">Email</string>
+    <string name="text_password">Password</string>
 </resources>
