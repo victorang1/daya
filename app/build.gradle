@@ -22,8 +22,18 @@ android {
         resValue "string", "web_client_id", (project.findProperty("WEB_CLIENT_ID") ?: "")
     }
 
+    signingConfigs {
+        release {
+            storeFile file('dayakeystore.keystore')
+            storePassword 'bangkitdaya123'
+            keyAlias 'dayakey'
+            keyPassword 'bangkitdaya123'
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

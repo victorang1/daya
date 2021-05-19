@@ -80,3 +80,4 @@ outTmp/
 /test.output
 /kotlin-native/dist
 /app/google-services.json
+/app/dayakeystore.keystore
