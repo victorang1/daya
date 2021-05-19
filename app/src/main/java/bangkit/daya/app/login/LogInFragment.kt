@@ -71,6 +71,7 @@ class LogInFragment : Fragment(), View.OnClickListener {
     private fun setListener() {
         binding.btnBack.setOnClickListener(this)
         binding.btnLogin.setOnClickListener(this)
+        binding.btnLoginWithGoogle.setOnClickListener(this)
     }
 
     private fun setObserver() {
