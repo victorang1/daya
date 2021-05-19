@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import bangkit.daya.R
-import bangkit.daya.app.signup.REGISTER_SUCCESS
 import bangkit.daya.databinding.FragmentLogInBinding
 import bangkit.daya.model.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -136,12 +135,9 @@ class LogInFragment : Fragment(), View.OnClickListener {
     }
 
     private fun loginWithGoogle() {
-        val user = binding.user
-        if (user != null && loginViewModel.isValid(user)) {
-            binding.progressBar.visibility = View.VISIBLE
-            val signInIntent = googleSignInClient.signInIntent
-            startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST)
-        }
+        binding.progressBar.visibility = View.VISIBLE
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST)
     }
 
     companion object {
