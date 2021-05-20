@@ -30,6 +30,8 @@ buildscript {
         map_ktx_version = "1.7.0"
 
         retrofit_version = "2.9.0"
+        logging_interceptor_version = "4.9.0"
+        kotlin_coroutines_version = "1.4.3"
     }
 
     repositories {

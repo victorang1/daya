@@ -26,9 +26,9 @@
 
     <fragment
         android:id="@+id/arFragment"
-        android:name="bangkit.daya.app.ar.ArFragment"
+        android:name="bangkit.daya.app.ar.ArFeatureFragment"
         android:label="fragment_ar"
-        tools:layout="@layout/fragment_ar" />
+        tools:layout="@layout/fragment_ar_feature" />
 
     <fragment
         android:id="@+id/landingFragment"

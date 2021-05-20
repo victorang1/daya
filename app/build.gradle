@@ -99,9 +99,14 @@ dependencies {
     implementation "com.google.ar:core:$ar_core_version"
     implementation "com.google.ar.sceneform.ux:sceneform-ux:$ar_sceneform_version"
 
-    // Retrofit
+    // Retrofit & Logging
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
 
     // Testing
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
