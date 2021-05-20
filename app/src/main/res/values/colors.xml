@@ -10,4 +10,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="app_color">#303841</color>
     <color name="background">#4D000000</color>
+
+    <color name="tfe_color_primary">#ffa800</color>
+    <color name="tfe_color_primary_dark">#ff6f00</color>
+    <color name="tfe_color_accent">#425066</color>
+    <color name="tfe_qa_color_highlight">#eeff41</color>
 </resources>
