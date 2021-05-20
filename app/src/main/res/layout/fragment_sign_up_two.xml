@@ -18,12 +18,12 @@
             android:layout_height="33dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:background="@android:color/white"
+            android:background="@android:color/transparent"
             android:foreground="?android:attr/selectableItemBackground"
             android:elevation="4dp"
             android:outlineProvider="none"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_baseline_undo_24"
+            android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -78,6 +78,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/dark_gray"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
