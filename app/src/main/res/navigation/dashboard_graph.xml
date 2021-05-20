@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_homeFragment_to_arFragment"
             app:destination="@id/arFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_questionAnswerFragment"
+            app:destination="@id/questionAnswerFragment" />
     </fragment>
 
     <fragment
@@ -31,5 +34,9 @@
         android:id="@+id/landingFragment"
         android:name="bangkit.daya.app.landing.LandingFragment"
         android:label="LandingFragment" />
+    <fragment
+        android:id="@+id/questionAnswerFragment"
+        android:name="bangkit.daya.app.qna.QuestionAnswerFragment"
+        android:label="QuestionAnswerFragment" />
 
 </navigation>
