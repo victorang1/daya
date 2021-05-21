@@ -18,6 +18,7 @@
     <dimen name="text_10sp">10sp</dimen>
     <dimen name="text_14sp">14sp</dimen>
     <dimen name="text_18sp">18sp</dimen>
+    <dimen name="text_24sp">24sp</dimen>
     <dimen name="text_40sp">40sp</dimen>
     <dimen name="text_64sp">64sp</dimen>
 </resources>

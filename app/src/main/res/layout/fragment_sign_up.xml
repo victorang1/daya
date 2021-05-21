@@ -50,9 +50,6 @@
             android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginHorizontal="@dimen/dimen_24dp"
             android:hint="@string/text_email"
-            android:textColorHint="@color/app_color"
-            app:boxStrokeColor="@color/app_color"
-            app:hintTextColor="@color/app_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_register"
@@ -63,7 +60,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@={user.email}"
-                android:textColor="@color/app_color"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -76,9 +72,6 @@
             android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginHorizontal="@dimen/dimen_24dp"
             android:hint="@string/text_password"
-            android:textColorHint="@color/app_color"
-            app:boxStrokeColor="@color/app_color"
-            app:hintTextColor="@color/app_color"
             app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +84,6 @@
                 android:layout_height="wrap_content"
                 android:text="@={user.password}"
                 android:inputType="textPassword"
-                android:textColor="@color/app_color"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -102,7 +94,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_marginHorizontal="@dimen/dimen_24dp"
-            android:background="@color/dark_gray"
             android:text="@string/NEXT"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
