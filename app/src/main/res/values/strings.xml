@@ -31,4 +31,7 @@
     <string name="tfe_qa_you_might_want_to_ask" translatable="false">You might want to ask?</string>
     <string name="tfe_qa_text_query" translatable="false">Text query</string>
     <string name="tfe_qa_ask_question" translatable="false">Ask question</string>
+    <string name="tfe_qa_title" translatable="false">Here is the title of article</string>
+    <string name="tfe_qa_content" translatable="false">This is the content of the article.</string>
+    <string name="tfe_qa_suggest" translatable="false">This is the question suggestion"</string>
 </resources>

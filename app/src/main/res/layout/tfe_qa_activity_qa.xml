@@ -13,7 +13,7 @@
       android:layout_height="wrap_content"
       android:padding="@dimen/dimen_16dp"
       app:layout_constraintTop_toTopOf="parent"
-      android:text="Here is the title of article"
+      android:text="@string/tfe_qa_title"
       android:textStyle="bold"/>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -27,7 +27,7 @@
         android:layout_height="match_parent"
         android:padding="@dimen/dimen_16dp"
         android:scrollbars="vertical"
-        android:text="This is the content of the article."/>
+        android:text="@string/tfe_qa_content"/>
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
   <androidx.constraintlayout.widget.ConstraintLayout
