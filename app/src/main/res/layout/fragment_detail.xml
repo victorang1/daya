@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <FrameLayout
@@ -17,13 +17,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_4dp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@android:color/transparent"
+                android:elevation="4dp"
+                android:outlineProvider="none"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/iv_object"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/borobudur"/>
+                android:src="@drawable/borobudur"
+                android:contentDescription="@string/object_pict"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -65,13 +80,16 @@
                 android:layout_marginTop="@dimen/dimen_8dp">
 
                 <ImageView
+                    android:id="@+id/iv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_4dp"
                     android:src="@drawable/ic_location"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/location_logo"/>
 
                 <TextView
+                    android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_4dp"
@@ -90,13 +108,16 @@
                 android:layout_marginTop="@dimen/dimen_8dp">
 
                 <ImageView
+                    android:id="@+id/iv_opening"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_4dp"
                     android:src="@drawable/ic_time"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/time_logo"/>
 
                 <TextView
+                    android:id="@+id/tv_opening_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_4dp"
@@ -128,14 +149,33 @@
                 android:layout_margin="@dimen/dimen_4dp">
 
                 <TextView
+                    android:id="@+id/tv_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_8dp"
                     android:textSize="@dimen/dimen_12dp"
                     tools:text ="@string/about_borobudur" />
 
             </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/label_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_8dp"
+            android:layout_marginTop="@dimen/dimen_8dp"
+            android:text="@string/review"
+            android:textColor="@color/dark_gray"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_8dp"
+            android:padding="@dimen/dimen_8dp"/>
 
     </LinearLayout>
 

@@ -14,28 +14,39 @@
         android:layout_height="match_parent"
         tools:context=".app.profile.ProfileFragment">
 
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="84dp"
+            android:src="@drawable/ic_person"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/app_color"
-            android:textSize="@dimen/text_40sp"
             android:text="@{name}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/app_color"
+            android:textSize="@dimen/text_24sp"
+            android:layout_marginTop="@dimen/dimen_16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
 
         <Button
             android:id="@+id/btn_log_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_logout"
-            app:layout_constraintTop_toBottomOf="@id/tv_name"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

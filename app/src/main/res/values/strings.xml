@@ -11,6 +11,7 @@
     <string name="text_home">Home</string>
     <string name="text_profile">Profile</string>
     <string name="about">About</string>
+    <string name="review">Review</string>
     <string name="borobudur">CANDI BOROBUDUR</string>
     <string name="about_borobudur">Built in the 7th century during the reign of the Sailendra Dynasty, the temple design follows Javanese Buddhist architecture, which blends the Indonesian indigenous cult of ancestor worship and the Buddhist concept of attaining Nirvana</string>
     <string name="text_logout">Logout</string>
@@ -19,6 +20,20 @@
     <string name="text_sign_in_with_google">Sign in with Google</string>
     <string name="text_email">Email</string>
     <string name="text_password">Password</string>
+    <string name="profile_pict">Profile Picture</string>
+    <string name="time_logo">Time Logo</string>
+    <string name="location_logo">Location Logo</string>
+    <string name="object_pict">Object Picture</string>
+
+    <string name="tfe_qa_app_name" translatable="false">TFL Question and Answer</string>
+    <string name="tfe_qa_banner_description" translatable="false">Banner</string>
+    <string name="tfe_qa_title_dataset_hint_text" translatable="false">Please select an article below.</string>
+    <string name="tfe_qa_you_might_want_to_ask" translatable="false">You might want to ask?</string>
+    <string name="tfe_qa_text_query" translatable="false">Text query</string>
+    <string name="tfe_qa_ask_question" translatable="false">Ask question</string>
+    <string name="tfe_qa_title" translatable="false">Here is the title of article</string>
+    <string name="tfe_qa_content" translatable="false">This is the content of the article.</string>
+    <string name="tfe_qa_suggest" translatable="false">This is the question suggestion"</string>
 
     <string name="arcore_not_installed">Please install ARCore</string>
     <string name="arcore_not_updated">Please update ARCore</string>
