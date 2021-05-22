@@ -3,7 +3,6 @@ package bangkit.daya.app.ar
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -244,11 +243,11 @@ class ArFeatureFragment : Fragment() {
         }
     }
 
-    private fun detachMarker(locationMarker: LocationMarker) {
-        locationMarker.anchorNode?.anchor?.detach()
-        locationMarker.anchorNode?.isEnabled = false
-        locationMarker.anchorNode = null
-    }
+//    private fun detachMarker(locationMarker: LocationMarker) {
+//        locationMarker.anchorNode?.anchor?.detach()
+//        locationMarker.anchorNode?.isEnabled = false
+//        locationMarker.anchorNode = null
+//    }
 
     private fun updateVenuesMarkers() {
         binding.arSceneView.scene.addOnUpdateListener()
