@@ -24,7 +24,8 @@
     <string name="arcore_not_updated">Please update ARCore</string>
     <string name="app_not_updated">Please update this app</string>
     <string name="arcore_not_supported">This device does not support AR</string>
-    <string name="loading_message">Loading your current location...</string>
+    <string name="loading_location_message">Loading your current location…</string>
+    <string name="loading_fetching_message">Fetching nearby location…</string>
     <string name="camera_and_location_permission_request">Location and Camera permissions are needed to use this
         feature
     </string>

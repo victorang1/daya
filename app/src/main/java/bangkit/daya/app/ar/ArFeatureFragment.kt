@@ -1,14 +1,13 @@
 package bangkit.daya.app.ar
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -16,11 +15,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
 import bangkit.daya.R
 import bangkit.daya.databinding.FragmentArFeatureBinding
+import bangkit.daya.databinding.LoadingDialogBinding
 import bangkit.daya.model.Geolocation
 import bangkit.daya.model.Place
 import bangkit.daya.util.AugmentedRealityLocationUtils
 import bangkit.daya.util.AugmentedRealityLocationUtils.INITIAL_MARKER_SCALE_MODIFIER
-import bangkit.daya.util.AugmentedRealityLocationUtils.INVALID_MARKER_SCALE_MODIFIER
 import bangkit.daya.util.AugmentedRealityLocationUtils.setupSession
 import bangkit.daya.util.PermissionUtils
 import com.google.ar.core.TrackingState
@@ -31,7 +30,6 @@ import com.google.ar.sceneform.rendering.ViewRenderable
 import org.koin.android.viewmodel.ext.android.viewModel
 import uk.co.appoly.arcorelocation.LocationMarker
 import uk.co.appoly.arcorelocation.LocationScene
-import java.lang.ref.WeakReference
 import java.util.concurrent.CompletableFuture
 
 class ArFeatureFragment : Fragment() {
@@ -41,7 +39,6 @@ class ArFeatureFragment : Fragment() {
 
     private var arCoreInstallRequested = false
 
-    // Our ARCore-Location scene
     private var locationScene: LocationScene? = null
 
     private var arHandler = Handler(Looper.getMainLooper())
@@ -68,7 +65,6 @@ class ArFeatureFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupLoadingDialog()
         setObserver()
     }
 
@@ -95,15 +91,28 @@ class ArFeatureFragment : Fragment() {
                 renderVenues()
             }
         }
+
+        arFeatureViewModel.loading.observe(viewLifecycleOwner) { loading ->
+            if (loading.isLoading) {
+                setupLoadingDialog(loading.message)
+            } else if (::loadingDialog.isInitialized && !loading.isLoading) {
+                loadingDialog.dismiss()
+            }
+        }
+
+        arFeatureViewModel.geolocation.observe(viewLifecycleOwner) { geolocation ->
+            fetchVenues(geolocation)
+        }
     }
 
-    private fun setupLoadingDialog() {
+    private fun setupLoadingDialog(loadingMessage: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        val dialogHintMainView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.loading_dialog, null) as LinearLayout
-        alertDialogBuilder.setView(dialogHintMainView)
+        val loadingDialogBinding = LoadingDialogBinding.inflate(layoutInflater)
+        loadingDialogBinding.loadingMessage = loadingMessage
+        alertDialogBuilder.setView(loadingDialogBinding.root)
         loadingDialog = alertDialogBuilder.create()
         loadingDialog.setCanceledOnTouchOutside(false)
+        loadingDialog.show()
     }
 
     private fun checkAndRequestPermissions() {
@@ -146,28 +155,33 @@ class ArFeatureFragment : Fragment() {
         }
 
         if (userGeolocation == Geolocation.EMPTY_GEOLOCATION) {
-            LocationAsyncTask(WeakReference(this@ArFeatureFragment)).execute(locationScene!!)
+            arFeatureViewModel.prepareLocationService(locationScene!!, getString(R.string.loading_location_message))
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, results: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        results: IntArray
+    ) {
         if (!PermissionUtils.hasLocationAndCameraPermissions(requireActivity())) {
             Toast.makeText(
                 requireContext(), R.string.camera_and_location_permission_request, Toast.LENGTH_LONG
-            )
-                .show()
+            ).show()
             if (!PermissionUtils.shouldShowRequestPermissionRationale(requireActivity())) {
-                // Permission denied with checking "Do not ask again".
                 PermissionUtils.launchPermissionSettings(requireActivity())
             }
             findNavController().navigateUp()
         }
     }
 
-    private fun fetchVenues(deviceLatitude: Double, deviceLongitude: Double) {
-        loadingDialog.dismiss()
-        userGeolocation = Geolocation(deviceLatitude.toString(), deviceLongitude.toString())
-        arFeatureViewModel.getNearbyPlaces(deviceLatitude, deviceLongitude)
+    private fun fetchVenues(geolocation: Geolocation) {
+        userGeolocation = geolocation
+        arFeatureViewModel.getNearbyPlaces(
+            geolocation.latitude.toDouble(),
+            geolocation.longitude.toDouble(),
+            getString(R.string.loading_fetching_message)
+        )
     }
 
     private fun renderVenues() {
@@ -202,7 +216,8 @@ class ArFeatureFragment : Fragment() {
                         }, 200)
 
                     } catch (ex: Exception) {
-                        Toast.makeText(requireContext(), "Error: ${ex.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Error: ${ex.message}", Toast.LENGTH_SHORT)
+                            .show()
                     }
                     null
                 }
@@ -222,18 +237,10 @@ class ArFeatureFragment : Fragment() {
 
             arHandler.post {
                 locationScene?.refreshAnchors()
-                val pinContainer = layoutRendarable.findViewById<ConstraintLayout>(R.id.pinContainer)
+                val pinContainer =
+                    layoutRendarable.findViewById<ConstraintLayout>(R.id.pinContainer)
                 pinContainer.visibility = View.VISIBLE
             }
-        }
-    }
-
-    private fun computeNewScaleModifierBasedOnDistance(locationMarker: LocationMarker, distance: Int) {
-        val scaleModifier = AugmentedRealityLocationUtils.getScaleModifierBasedOnRealDistance(distance)
-        return if (scaleModifier == INVALID_MARKER_SCALE_MODIFIER) {
-            detachMarker(locationMarker)
-        } else {
-            locationMarker.scaleModifier = scaleModifier
         }
     }
 
@@ -266,7 +273,10 @@ class ArFeatureFragment : Fragment() {
         }
     }
 
-    private fun setVenueNode(venue: Place, completableFuture: CompletableFuture<ViewRenderable>): Node {
+    private fun setVenueNode(
+        venue: Place,
+        completableFuture: CompletableFuture<ViewRenderable>
+    ): Node {
         val node = Node()
         node.renderable = completableFuture.get()
 
@@ -275,31 +285,13 @@ class ArFeatureFragment : Fragment() {
         val markerLayoutContainer = nodeLayout.findViewById<ConstraintLayout>(R.id.pinContainer)
         venueName.text = venue.name
         markerLayoutContainer.visibility = View.GONE
-        nodeLayout.setOnClickListener{ Toast.makeText(requireContext(), "Clicked: ${venue.name}", Toast.LENGTH_SHORT).show() }
+        nodeLayout.setOnClickListener {
+            Toast.makeText(
+                requireContext(),
+                "Clicked: ${venue.name}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
         return node
-    }
-
-    class LocationAsyncTask(private val activityWeakReference: WeakReference<ArFeatureFragment>) :
-        AsyncTask<LocationScene, Void, List<Double>>() {
-
-        override fun onPreExecute() {
-            super.onPreExecute()
-            activityWeakReference.get()!!.loadingDialog.show()
-        }
-
-        override fun doInBackground(vararg p0: LocationScene): List<Double> {
-            var deviceLatitude: Double?
-            var deviceLongitude: Double?
-            do {
-                deviceLatitude = p0[0].deviceLocation?.currentBestLocation?.latitude
-                deviceLongitude = p0[0].deviceLocation?.currentBestLocation?.longitude
-            } while (deviceLatitude == null || deviceLongitude == null)
-            return listOf(deviceLatitude, deviceLongitude)
-        }
-
-        override fun onPostExecute(geolocation: List<Double>) {
-            activityWeakReference.get()!!.fetchVenues(deviceLatitude = geolocation[0], deviceLongitude = geolocation[1])
-            super.onPostExecute(geolocation)
-        }
     }
 }
