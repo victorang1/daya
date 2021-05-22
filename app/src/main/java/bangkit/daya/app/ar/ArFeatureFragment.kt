@@ -1,246 +1,305 @@
 package bangkit.daya.app.ar
 
-import android.Manifest
-import android.app.ActivityManager
-import android.content.Context
-import android.content.pm.PackageManager
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
-import android.location.Location
+import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.getSystemService
+import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
 import bangkit.daya.R
-import bangkit.daya.base.ApplicationArFragment
 import bangkit.daya.databinding.FragmentArFeatureBinding
+import bangkit.daya.model.Geolocation
 import bangkit.daya.model.Place
-import bangkit.daya.model.getPositionVector
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.ar.sceneform.AnchorNode
+import bangkit.daya.util.AugmentedRealityLocationUtils
+import bangkit.daya.util.AugmentedRealityLocationUtils.INITIAL_MARKER_SCALE_MODIFIER
+import bangkit.daya.util.AugmentedRealityLocationUtils.INVALID_MARKER_SCALE_MODIFIER
+import bangkit.daya.util.AugmentedRealityLocationUtils.setupSession
+import bangkit.daya.util.PermissionUtils
+import com.google.ar.core.TrackingState
+import com.google.ar.core.exceptions.CameraNotAvailableException
+import com.google.ar.core.exceptions.UnavailableException
+import com.google.ar.sceneform.Node
+import com.google.ar.sceneform.rendering.ViewRenderable
 import org.koin.android.viewmodel.ext.android.viewModel
+import uk.co.appoly.arcorelocation.LocationMarker
+import uk.co.appoly.arcorelocation.LocationScene
+import java.lang.ref.WeakReference
+import java.util.concurrent.CompletableFuture
 
-class ArFeatureFragment : Fragment(), SensorEventListener {
+class ArFeatureFragment : Fragment() {
 
     private lateinit var binding: FragmentArFeatureBinding
     private val arFeatureViewModel: ArFeatureViewModel by viewModel()
 
-    private lateinit var arFragment: ApplicationArFragment
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var arCoreInstallRequested = false
 
-    private lateinit var sensorManager: SensorManager
-    private val accelerometerReading = FloatArray(3)
-    private val magnetometerReading = FloatArray(3)
-    private val rotationMatrix = FloatArray(9)
-    private val orientationAngles = FloatArray(3)
+    // Our ARCore-Location scene
+    private var locationScene: LocationScene? = null
 
-    private var anchorNode: AnchorNode? = null
-    private var markers: MutableList<Marker> = emptyList<Marker>().toMutableList()
-    private var places: List<Place>? = null
-    private var currentLocation: Location? = null
-    private var map: GoogleMap? = null
+    private var arHandler = Handler(Looper.getMainLooper())
+
+    lateinit var loadingDialog: AlertDialog
+
+    private val resumeArElementsTask = Runnable {
+        locationScene?.resume()
+        binding.arSceneView.resume()
+    }
+
+    private var userGeolocation = Geolocation.EMPTY_GEOLOCATION
+
+    private var venuesSet: MutableSet<Place> = mutableSetOf()
+    private var areAllMarkersLoaded = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        if (!isSupportedDevice()) {
-            return null
-        }
+    ): View {
         binding = FragmentArFeatureBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initProperty()
-        setupLocation()
-        setupAr()
+        setupLoadingDialog()
+        setObserver()
     }
 
     override fun onResume() {
         super.onResume()
-        sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)?.also { sensor ->
-            sensorManager.registerListener(
-                this,
-                sensor,
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
-        }
-        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)?.also { sensor ->
-            sensorManager.registerListener(
-                this,
-                sensor,
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
-        }
+        checkAndRequestPermissions()
     }
 
     override fun onPause() {
         super.onPause()
-        sensorManager.unregisterListener(this)
+        binding.arSceneView.session?.let {
+            locationScene?.pause()
+            binding.arSceneView.pause()
+        }
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
-        if (event == null) {
-            return
-        }
-        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            System.arraycopy(event.values, 0, accelerometerReading, 0, accelerometerReading.size)
-        } else if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
-            System.arraycopy(event.values, 0, magnetometerReading, 0, magnetometerReading.size)
-        }
-
-        // Update rotation matrix, which is needed to update orientation angles.
-        SensorManager.getRotationMatrix(
-            rotationMatrix,
-            null,
-            accelerometerReading,
-            magnetometerReading
-        )
-        SensorManager.getOrientation(rotationMatrix, orientationAngles)
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
-
-    private fun initProperty() {
-        arFragment = childFragmentManager.findFragmentById(R.id.ar_fragment) as ApplicationArFragment
-
-        sensorManager = requireActivity().getSystemService()!!
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-    }
-
-    private fun isSupportedDevice(): Boolean {
-        val activityManager = requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val openGlVersionString = activityManager.deviceConfigurationInfo.glEsVersion
-        if (openGlVersionString.toDouble() < 3.0) {
-            Toast.makeText(requireContext(), "Sceneform requires OpenGL ES 3.0 or later", Toast.LENGTH_LONG)
-                .show()
-            findNavController().navigateUp()
-            return false
-        }
-        return true
-    }
-
-    private fun setupLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requireActivity().requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION
-                    , Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_REQUEST_CODE)
-            return
-        }
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            currentLocation = location
-            arFeatureViewModel.getNearbyPlaces(location).observe(viewLifecycleOwner) { places ->
-                this@ArFeatureFragment.places = places
+    private fun setObserver() {
+        arFeatureViewModel.places.observe(viewLifecycleOwner) { places ->
+            if (!places.isNullOrEmpty()) {
+                venuesSet.clear()
+                venuesSet.addAll(places)
+                areAllMarkersLoaded = false
+                locationScene!!.clearMarkers()
+                renderVenues()
             }
-        }.addOnFailureListener {
-            Log.e(TAG, "Could not get location")
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == LOCATION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setupLocation()
-            } else {
-                findNavController().navigateUp()
-                Toast.makeText(requireContext(), "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
-            }
-            return
+    private fun setupLoadingDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogHintMainView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.loading_dialog, null) as LinearLayout
+        alertDialogBuilder.setView(dialogHintMainView)
+        loadingDialog = alertDialogBuilder.create()
+        loadingDialog.setCanceledOnTouchOutside(false)
+    }
+
+    private fun checkAndRequestPermissions() {
+        if (!PermissionUtils.hasLocationAndCameraPermissions(requireActivity())) {
+            PermissionUtils.requestCameraAndLocationPermissions(requireActivity())
+        } else {
+            this.setupSession()
         }
     }
 
-    private fun setupAr() {
-        arFragment.setOnTapArPlaneListener { hitResult, _, _ ->
-            val anchor = hitResult.createAnchor()
-            anchorNode = AnchorNode(anchor)
-            anchorNode?.setParent(arFragment.arSceneView.scene)
-            addPlaces(anchorNode!!)
-        }
-    }
-
-    private fun addPlaces(anchorNode: AnchorNode) {
-        val currentLocation = currentLocation
-        if (currentLocation == null) {
-            Log.w(TAG, "Location has not been determined yet")
-            return
-        }
-
-        val places = places
-        if (places == null) {
-            Log.w(TAG, "No places to put")
-            return
-        }
-
-        for (place in places) {
-            // Add the place in AR
-            val placeNode = PlaceNode(requireContext(), place)
-            placeNode.setParent(anchorNode)
-            placeNode.localPosition = place.getPositionVector(orientationAngles[0], currentLocation.latLng)
-            placeNode.setOnTapListener { _, _ ->
-                showInfoWindow(place)
-            }
-
-            // Add the place in maps
-            map?.let {
-                val marker = it.addMarker(
-                    MarkerOptions()
-                        .position(place.geometry.location.latLng)
-                        .title(place.name)
-                )
-                marker?.let { mark ->
-                    mark.tag = place
-                    markers.add(mark)
+    private fun setupSession() {
+        if (binding.arSceneView.session == null) {
+            try {
+                val session = setupSession(requireActivity(), arCoreInstallRequested)
+                if (session == null) {
+                    arCoreInstallRequested = true
+                    return
+                } else {
+                    binding.arSceneView.setupSession(session)
                 }
+            } catch (e: UnavailableException) {
+                AugmentedRealityLocationUtils.handleSessionException(requireActivity(), e)
+            }
+        }
+
+        if (locationScene == null) {
+            locationScene = LocationScene(requireActivity(), binding.arSceneView)
+            locationScene!!.setMinimalRefreshing(true)
+            locationScene!!.setOffsetOverlapping(true)
+            locationScene!!.setRemoveOverlapping(true)
+            locationScene!!.anchorRefreshInterval = 2000
+        }
+
+        try {
+            resumeArElementsTask.run()
+        } catch (e: CameraNotAvailableException) {
+            Toast.makeText(requireContext(), "Unable to get camera", Toast.LENGTH_LONG).show()
+            findNavController().navigateUp()
+            return
+        }
+
+        if (userGeolocation == Geolocation.EMPTY_GEOLOCATION) {
+            LocationAsyncTask(WeakReference(this@ArFeatureFragment)).execute(locationScene!!)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, results: IntArray) {
+        if (!PermissionUtils.hasLocationAndCameraPermissions(requireActivity())) {
+            Toast.makeText(
+                requireContext(), R.string.camera_and_location_permission_request, Toast.LENGTH_LONG
+            )
+                .show()
+            if (!PermissionUtils.shouldShowRequestPermissionRationale(requireActivity())) {
+                // Permission denied with checking "Do not ask again".
+                PermissionUtils.launchPermissionSettings(requireActivity())
+            }
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun fetchVenues(deviceLatitude: Double, deviceLongitude: Double) {
+        loadingDialog.dismiss()
+        userGeolocation = Geolocation(deviceLatitude.toString(), deviceLongitude.toString())
+        arFeatureViewModel.getNearbyPlaces(deviceLatitude, deviceLongitude)
+    }
+
+    private fun renderVenues() {
+        setupAndRenderVenuesMarkers()
+        updateVenuesMarkers()
+    }
+
+    private fun setupAndRenderVenuesMarkers() {
+        venuesSet.forEach { venue ->
+            val completableFutureViewRenderable = ViewRenderable.builder()
+                .setView(requireContext(), R.layout.location_layout_renderable)
+                .build()
+            CompletableFuture.anyOf(completableFutureViewRenderable)
+                .handle<Any> { _, throwable ->
+                    if (throwable != null) {
+                        return@handle null
+                    }
+                    try {
+                        val venueMarker = LocationMarker(
+                            venue.geometry.location.lng,
+                            venue.geometry.location.lat,
+                            setVenueNode(venue, completableFutureViewRenderable)
+                        )
+                        arHandler.postDelayed({
+                            attachMarkerToScene(
+                                venueMarker,
+                                completableFutureViewRenderable.get().view
+                            )
+                            if (venuesSet.indexOf(venue) == venuesSet.size - 1) {
+                                areAllMarkersLoaded = true
+                            }
+                        }, 200)
+
+                    } catch (ex: Exception) {
+                        Toast.makeText(requireContext(), "Error: ${ex.message}", Toast.LENGTH_SHORT).show()
+                    }
+                    null
+                }
+        }
+    }
+
+    private fun attachMarkerToScene(
+        locationMarker: LocationMarker,
+        layoutRendarable: View
+    ) {
+        resumeArElementsTask.run {
+            locationMarker.scalingMode = LocationMarker.ScalingMode.FIXED_SIZE_ON_SCREEN
+            locationMarker.scaleModifier = INITIAL_MARKER_SCALE_MODIFIER
+
+            locationScene?.mLocationMarkers?.add(locationMarker)
+            locationMarker.anchorNode?.isEnabled = true
+
+            arHandler.post {
+                locationScene?.refreshAnchors()
+                val pinContainer = layoutRendarable.findViewById<ConstraintLayout>(R.id.pinContainer)
+                pinContainer.visibility = View.VISIBLE
             }
         }
     }
 
-    private fun showInfoWindow(place: Place) {
-        val matchingPlaceNode = anchorNode?.children?.filterIsInstance<PlaceNode>()?.first {
-            val otherPlace = (it).place ?: return@first false
-            return@first otherPlace == place
+    private fun computeNewScaleModifierBasedOnDistance(locationMarker: LocationMarker, distance: Int) {
+        val scaleModifier = AugmentedRealityLocationUtils.getScaleModifierBasedOnRealDistance(distance)
+        return if (scaleModifier == INVALID_MARKER_SCALE_MODIFIER) {
+            detachMarker(locationMarker)
+        } else {
+            locationMarker.scaleModifier = scaleModifier
         }
-        matchingPlaceNode?.showInfoWindow()
-
-//        // Show as marker
-//        val matchingMarker = markers.firstOrNull {
-//            val placeTag = (it.tag as? Place) ?: return@firstOrNull false
-//            return@firstOrNull placeTag == place
-//        }
-//        matchingMarker?.showInfoWindow()
     }
 
-    companion object {
-        private const val TAG = "<RESULT>"
-        private const val LOCATION_REQUEST_CODE = 101
+    private fun detachMarker(locationMarker: LocationMarker) {
+        locationMarker.anchorNode?.anchor?.detach()
+        locationMarker.anchorNode?.isEnabled = false
+        locationMarker.anchorNode = null
+    }
+
+    private fun updateVenuesMarkers() {
+        binding.arSceneView.scene.addOnUpdateListener()
+        {
+            if (!areAllMarkersLoaded) {
+                return@addOnUpdateListener
+            }
+
+            locationScene?.mLocationMarkers?.forEach { locationMarker ->
+                locationMarker.height =
+                    AugmentedRealityLocationUtils.generateRandomHeightBasedOnDistance(
+                        locationMarker?.anchorNode?.distance ?: 0
+                    )
+            }
+
+
+            val frame = binding.arSceneView.arFrame ?: return@addOnUpdateListener
+            if (frame.camera.trackingState != TrackingState.TRACKING) {
+                return@addOnUpdateListener
+            }
+            locationScene!!.processFrame(frame)
+        }
+    }
+
+    private fun setVenueNode(venue: Place, completableFuture: CompletableFuture<ViewRenderable>): Node {
+        val node = Node()
+        node.renderable = completableFuture.get()
+
+        val nodeLayout = completableFuture.get().view
+        val venueName = nodeLayout.findViewById<TextView>(R.id.name)
+        val markerLayoutContainer = nodeLayout.findViewById<ConstraintLayout>(R.id.pinContainer)
+        venueName.text = venue.name
+        markerLayoutContainer.visibility = View.GONE
+        nodeLayout.setOnClickListener{ Toast.makeText(requireContext(), "Clicked: ${venue.name}", Toast.LENGTH_SHORT).show() }
+        return node
+    }
+
+    class LocationAsyncTask(private val activityWeakReference: WeakReference<ArFeatureFragment>) :
+        AsyncTask<LocationScene, Void, List<Double>>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            activityWeakReference.get()!!.loadingDialog.show()
+        }
+
+        override fun doInBackground(vararg p0: LocationScene): List<Double> {
+            var deviceLatitude: Double?
+            var deviceLongitude: Double?
+            do {
+                deviceLatitude = p0[0].deviceLocation?.currentBestLocation?.latitude
+                deviceLongitude = p0[0].deviceLocation?.currentBestLocation?.longitude
+            } while (deviceLatitude == null || deviceLongitude == null)
+            return listOf(deviceLatitude, deviceLongitude)
+        }
+
+        override fun onPostExecute(geolocation: List<Double>) {
+            activityWeakReference.get()!!.fetchVenues(deviceLatitude = geolocation[0], deviceLongitude = geolocation[1])
+            super.onPostExecute(geolocation)
+        }
     }
 }
-
-val Location.latLng: LatLng
-    get() = LatLng(this.latitude, this.longitude)

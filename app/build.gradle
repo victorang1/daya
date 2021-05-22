@@ -102,11 +102,14 @@ dependencies {
     // Retrofit & Logging
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
+    // Ar Location
+    implementation "com.github.appoly:ARCore-Location:1.2"
+
+    // Rx Java
+    implementation "io.reactivex.rxjava3:rxjava:3.0.12"
 
     // Testing
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"

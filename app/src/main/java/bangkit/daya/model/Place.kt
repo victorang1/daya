@@ -12,15 +12,8 @@ data class Place(
     val name: String,
     val geometry: Geometry
 ) {
-    override fun equals(other: Any?): Boolean {
-        if (other !is Place) {
-            return false
-        }
-        return this.id == other.id
-    }
-
     override fun hashCode(): Int {
-        return this.id.hashCode()
+        return this.name.hashCode()
     }
 }
 
