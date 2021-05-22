@@ -21,4 +21,5 @@
     <dimen name="text_24sp">24sp</dimen>
     <dimen name="text_40sp">40sp</dimen>
     <dimen name="text_64sp">64sp</dimen>
+    <dimen name="dimen_20dp">20dp</dimen>
 </resources>

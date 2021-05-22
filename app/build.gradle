@@ -19,7 +19,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         resValue "string", "web_client_id", (project.findProperty("WEB_CLIENT_ID") ?: "")
+        resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
     }
 
     signingConfigs {
@@ -78,17 +80,36 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
+    // Koin
     implementation "org.koin:koin-core:$koin_version"
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-android-viewmodel:$koin_version"
-
-    // AR Core
-    implementation "com.google.ar:core:$ar_core_version"
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    // Maps & Location
+    implementation "com.google.android.gms:play-services-location:$location_services_version"
+    implementation "com.google.android.gms:play-services-maps:$maps_services_version"
+    implementation "com.google.maps.android:maps-utils-ktx:$map_ktx_version"
+
+    // AR Core
+    implementation "com.google.ar:core:$ar_core_version"
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:$ar_sceneform_version"
+
+    // Retrofit & Logging
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
+
+    // Ar Location
+    implementation "com.github.appoly:ARCore-Location:1.2"
+
+    // Rx Java
+    implementation "io.reactivex.rxjava3:rxjava:3.0.12"
 
     // Testing
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
@@ -102,5 +123,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.google.guava:guava:28.1-android'
     implementation ('org.tensorflow:tensorflow-lite:2.4.0')
-    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
+    implementation ('org.tensorflow:tensorflow-lite-metadata:0.1.0') {
+        exclude group: 'com.google.flatbuffers'
+    }
 }

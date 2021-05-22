@@ -34,4 +34,14 @@
     <string name="tfe_qa_title" translatable="false">Here is the title of article</string>
     <string name="tfe_qa_content" translatable="false">This is the content of the article.</string>
     <string name="tfe_qa_suggest" translatable="false">This is the question suggestion"</string>
+
+    <string name="arcore_not_installed">Please install ARCore</string>
+    <string name="arcore_not_updated">Please update ARCore</string>
+    <string name="app_not_updated">Please update this app</string>
+    <string name="arcore_not_supported">This device does not support AR</string>
+    <string name="loading_location_message">Loading your current location…</string>
+    <string name="loading_fetching_message">Fetching nearby location…</string>
+    <string name="camera_and_location_permission_request">Location and Camera permissions are needed to use this
+        feature
+    </string>
 </resources>

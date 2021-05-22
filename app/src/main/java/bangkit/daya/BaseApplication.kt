@@ -1,6 +1,7 @@
 package bangkit.daya
 
 import android.app.Application
+import bangkit.daya.di.networkModule
 import bangkit.daya.di.repositoryModule
 import bangkit.daya.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -19,7 +20,7 @@ class BaseApplication : Application() {
         startKoin {
             androidLogger(Level.NONE)
             androidContext(this@BaseApplication)
-            modules(viewModelModule, repositoryModule)
+            modules(networkModule, viewModelModule, repositoryModule)
         }
     }
 }

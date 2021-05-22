@@ -1,10 +1,12 @@
 package bangkit.daya.repository.general
 
+import android.content.Context
 import bangkit.daya.R
-import bangkit.daya.model.DashboardItem
-import bangkit.daya.model.LandingItem
+import bangkit.daya.model.*
+import bangkit.daya.service.ApiService
+import io.reactivex.rxjava3.core.Observable
 
-class GeneralRepositoryImpl : GeneralRepository {
+class GeneralRepositoryImpl(private val apiService: ApiService, private val context: Context) : GeneralRepository {
 
     override fun getLandingItems(): MutableList<LandingItem> {
         val items = mutableListOf<LandingItem>()
@@ -20,5 +22,14 @@ class GeneralRepositoryImpl : GeneralRepository {
         dashboardItems.add(DashboardItem(R.drawable.user_navigation, "Object Detection", R.id.action_homeFragment_to_arFragment))
         dashboardItems.add(DashboardItem(R.drawable.user_navigation, "QnA", R.id.action_homeFragment_to_questionAnswerFragment))
         return dashboardItems
+    }
+
+    override fun getNearbyTouristAttractionPlaces(lat: Double, lng: Double): Observable<PlaceWrapper> {
+        return apiService.nearbyPlaces(
+            apiKey = context.getString(R.string.google_maps_key),
+            location = "$lat,$lng",
+            radiusInMeters = 10000,
+            placeType = "tourist_attraction"
+        )
     }
 }
