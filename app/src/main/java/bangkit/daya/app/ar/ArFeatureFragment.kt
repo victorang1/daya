@@ -51,7 +51,7 @@ class ArFeatureFragment : Fragment() {
 
     private var userGeolocation = Geolocation.EMPTY_GEOLOCATION
 
-    private var venuesSet: MutableSet<Place> = mutableSetOf()
+    private var placesSet: MutableSet<Place> = mutableSetOf()
     private var areAllMarkersLoaded = false
 
     override fun onCreateView(
@@ -83,8 +83,8 @@ class ArFeatureFragment : Fragment() {
     private fun setObserver() {
         arFeatureViewModel.places.observe(viewLifecycleOwner) { places ->
             if (!places.isNullOrEmpty()) {
-                venuesSet.clear()
-                venuesSet.addAll(places)
+                placesSet.clear()
+                placesSet.addAll(places)
                 areAllMarkersLoaded = false
                 locationScene!!.clearMarkers()
                 renderVenues()
@@ -189,7 +189,7 @@ class ArFeatureFragment : Fragment() {
     }
 
     private fun setupAndRenderVenuesMarkers() {
-        venuesSet.forEach { venue ->
+        placesSet.forEach { place ->
             val completableFutureViewRenderable = ViewRenderable.builder()
                 .setView(requireContext(), R.layout.location_layout_renderable)
                 .build()
@@ -199,17 +199,17 @@ class ArFeatureFragment : Fragment() {
                         return@handle null
                     }
                     try {
-                        val venueMarker = LocationMarker(
-                            venue.geometry.location.lng,
-                            venue.geometry.location.lat,
-                            setVenueNode(venue, completableFutureViewRenderable)
+                        val placeMarker = LocationMarker(
+                            place.geometry.location.lng,
+                            place.geometry.location.lat,
+                            setVenueNode(place, completableFutureViewRenderable)
                         )
                         arHandler.postDelayed({
                             attachMarkerToScene(
-                                venueMarker,
+                                placeMarker,
                                 completableFutureViewRenderable.get().view
                             )
-                            if (venuesSet.indexOf(venue) == venuesSet.size - 1) {
+                            if (placesSet.indexOf(place) == placesSet.size - 1) {
                                 areAllMarkersLoaded = true
                             }
                         }, 200)
@@ -273,21 +273,21 @@ class ArFeatureFragment : Fragment() {
     }
 
     private fun setVenueNode(
-        venue: Place,
+        place: Place,
         completableFuture: CompletableFuture<ViewRenderable>
     ): Node {
         val node = Node()
         node.renderable = completableFuture.get()
 
         val nodeLayout = completableFuture.get().view
-        val venueName = nodeLayout.findViewById<TextView>(R.id.name)
+        val placeName = nodeLayout.findViewById<TextView>(R.id.name)
         val markerLayoutContainer = nodeLayout.findViewById<ConstraintLayout>(R.id.pinContainer)
-        venueName.text = venue.name
+        placeName.text = place.name
         markerLayoutContainer.visibility = View.GONE
         nodeLayout.setOnClickListener {
             Toast.makeText(
                 requireContext(),
-                "Clicked: ${venue.name}",
+                "Clicked: ${place.name}",
                 Toast.LENGTH_SHORT
             ).show()
         }
