@@ -34,6 +34,7 @@ import java.util.concurrent.CompletableFuture
 class ArFeatureFragment : Fragment() {
 
     private lateinit var binding: FragmentArFeatureBinding
+    private lateinit var loadingBinding: LoadingDialogBinding
     private val arFeatureViewModel: ArFeatureViewModel by viewModel()
 
     private var arCoreInstallRequested = false
@@ -64,6 +65,7 @@ class ArFeatureFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupLoadingDialog()
         setObserver()
     }
 
@@ -93,25 +95,25 @@ class ArFeatureFragment : Fragment() {
 
         arFeatureViewModel.loading.observe(viewLifecycleOwner) { loading ->
             if (loading.isLoading) {
-                setupLoadingDialog(loading.message)
+                loadingBinding.loadingMessage = loading.message
+                loadingDialog.show()
             } else if (::loadingDialog.isInitialized && !loading.isLoading) {
                 loadingDialog.dismiss()
             }
         }
 
         arFeatureViewModel.geolocation.observe(viewLifecycleOwner) { geolocation ->
-            fetchVenues(geolocation)
+            userGeolocation = geolocation
         }
     }
 
-    private fun setupLoadingDialog(loadingMessage: String) {
+    private fun setupLoadingDialog() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        val loadingDialogBinding = LoadingDialogBinding.inflate(layoutInflater)
-        loadingDialogBinding.loadingMessage = loadingMessage
-        alertDialogBuilder.setView(loadingDialogBinding.root)
+        loadingBinding = LoadingDialogBinding.inflate(layoutInflater)
+        loadingBinding.loadingMessage = ""
+        alertDialogBuilder.setView(loadingBinding.root)
         loadingDialog = alertDialogBuilder.create()
         loadingDialog.setCanceledOnTouchOutside(false)
-        loadingDialog.show()
     }
 
     private fun checkAndRequestPermissions() {
@@ -154,7 +156,9 @@ class ArFeatureFragment : Fragment() {
         }
 
         if (userGeolocation == Geolocation.EMPTY_GEOLOCATION) {
-            arFeatureViewModel.prepareLocationService(locationScene!!, getString(R.string.loading_location_message))
+            arFeatureViewModel.prepareLocationService(
+                locationScene!!,
+                listOf(getString(R.string.loading_location_message), getString(R.string.loading_fetching_message)),)
         }
     }
 
@@ -172,15 +176,6 @@ class ArFeatureFragment : Fragment() {
             }
             findNavController().navigateUp()
         }
-    }
-
-    private fun fetchVenues(geolocation: Geolocation) {
-        userGeolocation = geolocation
-        arFeatureViewModel.getNearbyPlaces(
-            geolocation.latitude.toDouble(),
-            geolocation.longitude.toDouble(),
-            getString(R.string.loading_fetching_message)
-        )
     }
 
     private fun renderVenues() {

@@ -25,44 +25,40 @@ class ArFeatureViewModel(private val generalRepository: GeneralRepository) : Vie
     private val _loading = MutableLiveData<Loading>()
     val loading: LiveData<Loading> = _loading
 
-    fun getNearbyPlaces(lat: Double, lng: Double, loadingMessage: String) {
-        setLoading(true, loadingMessage)
-        val subscriptions = generalRepository.getNearbyTouristAttractionPlaces(lat, lng)
+    private fun getNearbyPlaces(lat: Double, lng: Double): Observable<List<Place>> {
+        return generalRepository.getNearbyTouristAttractionPlaces(lat, lng)
             .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.computation())
-            .doOnSubscribe { setLoading(false) }
-            .subscribe({
-                _places.postValue(it.results)
-            }, {
-                it.printStackTrace()
-            })
-        mSubscriptions.add(subscriptions)
+            .map { it.results }
     }
 
     private fun setLoading(isLoading: Boolean, loadingMessage: String = "") {
         _loading.postValue(Loading(isLoading, loadingMessage))
     }
 
-    fun prepareLocationService(locationScene: LocationScene, loadingMessage: String) {
-        setLoading(true, loadingMessage)
+    fun prepareLocationService(locationScene: LocationScene, messages: List<String>) {
+        setLoading(true, messages[0])
         val locationSubs = createLocationServiceObservable(locationScene)
             .subscribeOn(Schedulers.computation())
-            .observeOn(Schedulers.computation())
-            .doOnComplete { setLoading(false) }
-            .subscribe { geolocation ->
+            .flatMap { geolocation ->
                 _geolocation.postValue(
                     Geolocation(
                         geolocation[0].toString(),
                         geolocation[1].toString()
                     )
                 )
+                setLoading(true, messages[1])
+                getNearbyPlaces(geolocation[0], geolocation[1])
+            }
+            .observeOn(Schedulers.computation())
+            .subscribe {
+                setLoading(false)
+                _places.postValue(it)
             }
         mSubscriptions.add(locationSubs)
     }
 
     private fun createLocationServiceObservable(locationScene: LocationScene): Observable<List<Double>> {
         return Observable.create { subscriber ->
-
             var deviceLatitude: Double?
             var deviceLongitude: Double?
             do {
