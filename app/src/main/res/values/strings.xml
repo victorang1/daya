@@ -44,4 +44,5 @@
     <string name="camera_and_location_permission_request">Location and Camera permissions are needed to use this
         feature
     </string>
+    <string name="text_take_photo">Take Photo</string>
 </resources>

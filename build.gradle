@@ -32,6 +32,8 @@ buildscript {
         retrofit_version = "2.9.0"
         logging_interceptor_version = "4.9.0"
         kotlin_coroutines_version = "1.4.3"
+
+        camerax_version = "1.0.0"
     }
 
     repositories {

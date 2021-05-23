@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_homeFragment_to_questionAnswerFragment"
             app:destination="@id/questionAnswerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_imageRecognitionFragment"
+            app:destination="@id/imageRecognitionFragment" />
     </fragment>
 
     <fragment
@@ -38,5 +41,9 @@
         android:id="@+id/questionAnswerFragment"
         android:name="bangkit.daya.app.qna.QuestionAnswerFragment"
         android:label="QuestionAnswerFragment" />
+    <fragment
+        android:id="@+id/imageRecognitionFragment"
+        android:name="bangkit.daya.app.imagerecognition.ImageRecognitionFragment"
+        android:label="ImageRecognitionFragment" />
 
 </navigation>
