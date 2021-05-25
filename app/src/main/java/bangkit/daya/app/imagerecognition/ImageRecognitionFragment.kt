@@ -159,8 +159,8 @@ class ImageRecognitionFragment : Fragment() {
             )
             inputFeature0.loadBuffer(tfImage.buffer)
 
-            val array = tfImage.buffer.asIntBuffer().array()
-            Log.d("<RESULT>", "analyze: ${Gson().toJson(array.size)}")
+//            val array = tfImage.buffer.asIntBuffer().array()
+//            Log.d("<RESULT>", "analyze: ${Gson().toJson(array.size)}")
 
             val outputs = placeModel.process(inputFeature0)
                 .outputFeature0AsTensorBuffer
