@@ -50,6 +50,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        mlModelBinding true
     }
 }
 
@@ -78,6 +79,8 @@ dependencies {
     // Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.1.0-rc1'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.2.0'
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     // Koin
@@ -128,10 +131,14 @@ dependencies {
     }
 
     // CameraX
+
     // CameraX core library using camera2 implementation
     implementation "androidx.camera:camera-camera2:$camerax_version"
     // CameraX Lifecycle Library
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     // CameraX View class
     implementation "androidx.camera:camera-view:1.0.0-alpha24"
+
+    // Tensorflow GPU
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.3.0'
 }
