@@ -13,11 +13,11 @@
             android:id="@+id/action_homeFragment_to_arFragment"
             app:destination="@id/arFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_questionAnswerFragment"
-            app:destination="@id/questionAnswerFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_imageRecognitionFragment"
             app:destination="@id/imageRecognitionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_datasetListActivity"
+            app:destination="@id/datasetListActivity" />
     </fragment>
 
     <fragment
@@ -38,12 +38,12 @@
         android:name="bangkit.daya.app.landing.LandingFragment"
         android:label="LandingFragment" />
     <fragment
-        android:id="@+id/questionAnswerFragment"
-        android:name="bangkit.daya.app.qna.QuestionAnswerFragment"
-        android:label="QuestionAnswerFragment" />
-    <fragment
         android:id="@+id/imageRecognitionFragment"
         android:name="bangkit.daya.app.imagerecognition.ImageRecognitionFragment"
         android:label="ImageRecognitionFragment" />
+    <activity
+        android:id="@+id/datasetListActivity"
+        android:name="bangkit.daya.app.qna.ui.DatasetListActivity"
+        android:label="DatasetListActivity" />
 
 </navigation>

@@ -20,7 +20,7 @@ class GeneralRepositoryImpl(private val apiService: ApiService, private val cont
         val dashboardItems = mutableListOf<DashboardItem>()
         dashboardItems.add(DashboardItem(R.drawable.user_navigation, "AR", R.id.action_homeFragment_to_arFragment))
         dashboardItems.add(DashboardItem(R.drawable.user_navigation, "Object Detection", R.id.action_homeFragment_to_imageRecognitionFragment))
-        dashboardItems.add(DashboardItem(R.drawable.user_navigation, "QnA", R.id.action_homeFragment_to_questionAnswerFragment))
+        dashboardItems.add(DashboardItem(R.drawable.user_navigation, "QnA", R.id.action_homeFragment_to_datasetListActivity))
         return dashboardItems
     }
 
