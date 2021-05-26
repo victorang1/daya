@@ -84,6 +84,6 @@ class DetailFragment : Fragment() {
     }
 
     private fun onButtonLikeClick(review: Review) {
-
+        detailViewModel.likeReview(review.postId)
     }
 }

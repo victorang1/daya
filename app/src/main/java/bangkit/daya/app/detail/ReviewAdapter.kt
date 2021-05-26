@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import bangkit.daya.databinding.PostItemLayoutBinding
 import bangkit.daya.model.Review
 import com.bumptech.glide.Glide
+import com.jakewharton.rxbinding4.view.clicks
+import java.util.concurrent.TimeUnit
 
 class ReviewAdapter(private val onButtonLikeClick: (review: Review) -> Unit): RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
 
@@ -35,7 +37,12 @@ class ReviewAdapter(private val onButtonLikeClick: (review: Review) -> Unit): Re
         fun bind(reviewItem: Review) {
             with (postItemLayoutBinding) {
                 review = reviewItem
-                btnLike.setOnClickListener { onButtonLikeClick.invoke(reviewItem) }
+                btnLike.clicks()
+                    .throttleFirst(500, TimeUnit.MILLISECONDS)
+                    .subscribe {
+                        reviewItem.toggleFavorite()
+                        onButtonLikeClick.invoke(reviewItem)
+                    }
                 Glide.with(postItemLayoutBinding.root.context)
                     .load(reviewItem.avatar)
                     .circleCrop()

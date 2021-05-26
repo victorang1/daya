@@ -77,6 +77,7 @@ class DetailViewModel(private val detailRepository: DetailRepository) : ViewMode
         } else {
             val reviews = response.data.map {
                 Review(
+                    it.postId,
                     it.description,
                     it.username,
                     it.createdAt,
@@ -87,6 +88,14 @@ class DetailViewModel(private val detailRepository: DetailRepository) : ViewMode
             }
             _reviews.postValue(reviews)
         }
+    }
+
+    fun likeReview(postId: Int) {
+        val likeSubs = detailRepository.likeReview(postId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribe()
+        mSubscriptions.add(likeSubs)
     }
 
     override fun onCleared() {

@@ -28,7 +28,7 @@ class GeneralRepositoryImpl(private val mapService: MapService, private val cont
         return mapService.nearbyPlaces(
             apiKey = context.getString(R.string.google_maps_key),
             location = "$lat,$lng",
-            radiusInMeters = 10000,
+            radiusInMeters = 1000,
             placeType = "tourist_attraction"
         )
     }
