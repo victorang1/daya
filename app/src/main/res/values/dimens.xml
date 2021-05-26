@@ -14,11 +14,13 @@
     <dimen name="default_image_size">140dp</dimen>
 
     <!-- Text Dimens -->
+    <dimen name="text_8sp">8sp</dimen>
     <dimen name="text_12sp">12sp</dimen>
     <dimen name="text_10sp">10sp</dimen>
     <dimen name="text_14sp">14sp</dimen>
     <dimen name="text_18sp">18sp</dimen>
     <dimen name="text_24sp">24sp</dimen>
+    <dimen name="text_32sp">32sp</dimen>
     <dimen name="text_40sp">40sp</dimen>
     <dimen name="text_64sp">64sp</dimen>
     <dimen name="dimen_20dp">20dp</dimen>

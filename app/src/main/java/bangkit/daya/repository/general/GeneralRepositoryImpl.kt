@@ -3,10 +3,10 @@ package bangkit.daya.repository.general
 import android.content.Context
 import bangkit.daya.R
 import bangkit.daya.model.*
-import bangkit.daya.service.ApiService
+import bangkit.daya.service.MapService
 import io.reactivex.rxjava3.core.Observable
 
-class GeneralRepositoryImpl(private val apiService: ApiService, private val context: Context) : GeneralRepository {
+class GeneralRepositoryImpl(private val mapService: MapService, private val context: Context) : GeneralRepository {
 
     override fun getLandingItems(): MutableList<LandingItem> {
         val items = mutableListOf<LandingItem>()
@@ -25,7 +25,7 @@ class GeneralRepositoryImpl(private val apiService: ApiService, private val cont
     }
 
     override fun getNearbyTouristAttractionPlaces(lat: Double, lng: Double): Observable<PlaceWrapper> {
-        return apiService.nearbyPlaces(
+        return mapService.nearbyPlaces(
             apiKey = context.getString(R.string.google_maps_key),
             location = "$lat,$lng",
             radiusInMeters = 10000,

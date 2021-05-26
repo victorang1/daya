@@ -1,68 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/dimen_4dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="review"
+            type="bangkit.daya.model.Review" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/dimen_6dp"
-        android:paddingVertical="@dimen/dimen_6dp">
+        app:cardCornerRadius="@dimen/dimen_4dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/cv_profile"
-            android:layout_width="@dimen/dimen_16dp"
-            android:layout_height="@dimen/dimen_16dp"
-            android:contentDescription="@string/profile_pict"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_4dp"
-            android:layout_marginTop="@dimen/dimen_2dp"
-            android:layout_marginBottom="@dimen/dimen_4dp"
-            android:textSize="@dimen/dimen_8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/cv_profile"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="daya" />
+            android:paddingHorizontal="@dimen/dimen_6dp"
+            android:paddingVertical="@dimen/dimen_6dp">
 
-        <TextView
-            android:id="@+id/tv_review"
-            android:layout_width="@dimen/dimen_360dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_4dp"
-            android:background="@android:color/transparent"
-            android:textSize="@dimen/text_10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_like"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/cv_profile"
-            app:layout_constraintTop_toBottomOf="@+id/cv_profile"
-            app:layout_constraintVertical_bias="0.0"
-            tools:text="Candi Borobudur terdiri dari dua juta balok batu vulkanik yang terpahat dengan baik. Masing-masing balok saling mengunci, sehingga candi tetap kokoh sampai sekarang." />
+            <ImageView
+                android:id="@+id/cv_profile"
+                android:layout_width="@dimen/dimen_16dp"
+                android:layout_height="@dimen/dimen_16dp"
+                android:contentDescription="@string/profile_pict"
+                android:scaleType="fitXY"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btn_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dimen_4dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_dislike"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_4dp"
+                android:layout_marginTop="@dimen/dimen_2dp"
+                android:layout_marginBottom="@dimen/dimen_4dp"
+                android:textSize="@dimen/text_8sp"
+                android:text="@{review.username}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/cv_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="daya" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_review"
+                android:layout_width="@dimen/dimen_360dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_4dp"
+                android:background="@android:color/transparent"
+                android:textSize="@dimen/text_10sp"
+                android:text="@{review.description}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_like"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/cv_profile"
+                app:layout_constraintTop_toBottomOf="@+id/cv_profile"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="Candi Borobudur terdiri dari dua juta balok batu vulkanik yang terpahat dengan baik. Masing-masing balok saling mengunci, sehingga candi tetap kokoh sampai sekarang." />
+
+            <ImageButton
+                android:id="@+id/btn_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_4dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_dislike"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>
