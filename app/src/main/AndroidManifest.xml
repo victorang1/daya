@@ -27,6 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".app.qna.ui.DatasetListActivity" />
+        <activity android:name=".app.qna.ui.QaActivity" />
 
         <meta-data android:name="com.google.ar.core" android:value="required" />
 

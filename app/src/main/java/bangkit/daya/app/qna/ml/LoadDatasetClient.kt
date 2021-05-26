@@ -31,11 +31,11 @@ class LoadDatasetClient(private val context: Context) {
             val jsonQuestions = map["questions"]!!
             titles = listToArray(jsonTitles)
             contents = listToArray(jsonContents)
-            questions = arrayOf()
-            var index = 0
+            val tempQuestions = mutableListOf<Array<String>>()
             for (item in jsonQuestions) {
-                questions[index++] = item.toTypedArray()
+                tempQuestions.add(item.toTypedArray())
             }
+            questions = tempQuestions.toTypedArray()
         } catch (ex: IOException) {
             Log.e(TAG, ex.toString())
         }
@@ -72,12 +72,11 @@ class LoadDatasetClient(private val context: Context) {
         private const val JSON_DIR = "qa.json"
         private const val DIC_DIR = "vocab.txt"
         private fun listToArray(list: List<List<String>>): Array<String> {
-            val answer = arrayOf<String>()
-            var index = 0
+            val answer = mutableListOf<String>()
             for (item in list) {
-                answer[index++] = item[0]
+                answer.add(item[0])
             }
-            return answer
+            return answer.toTypedArray()
         }
     }
 
