@@ -25,7 +25,7 @@
     <string name="location_logo">Location Logo</string>
     <string name="object_pict">Object Picture</string>
 
-    <string name="tfe_qa_app_name" translatable="false">TFL Question and Answer</string>
+    <string name="Header_QnA" translatable="false">Question and Answer</string>
     <string name="tfe_qa_banner_description" translatable="false">Banner</string>
     <string name="tfe_qa_title_dataset_hint_text" translatable="false">Please select an article below.</string>
     <string name="tfe_qa_you_might_want_to_ask" translatable="false">You might want to ask?</string>
