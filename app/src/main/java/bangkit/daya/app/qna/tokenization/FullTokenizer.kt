@@ -15,6 +15,7 @@ limitations under the License.
 package bangkit.daya.app.qna.tokenization
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A java realization of Bert tokenization. Original python code:
@@ -32,7 +33,7 @@ class FullTokenizer(private val dic: Map<String, Int>, doLowerCase: Boolean) {
         return splitTokens
     }
 
-    fun convertTokensToIds(tokens: List<String>): List<Int?> {
+    fun convertTokensToIds(tokens: MutableList<String>): MutableList<Int?> {
         val outputIds: MutableList<Int?> = ArrayList()
         for (token in tokens) {
             outputIds.add(dic[token])

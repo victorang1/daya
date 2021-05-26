@@ -30,7 +30,7 @@ import java.util.*
 
 /** Interface to load TfLite model and provide predictions.  */
 class QaClient(private val context: Context) : AutoCloseable {
-    private val dic: MutableMap<String?, Int?> = HashMap()
+    private val dic: MutableMap<String, Int> = HashMap()
     private val featureConverter: FeatureConverter
     private var tflite: Interpreter? = null
     private var metadataExtractor: MetadataExtractor? = null
@@ -216,7 +216,7 @@ class QaClient(private val context: Context) : AutoCloseable {
         // Model uses the closed interval [start, end] for indices.
         val startIndexes = getBestIndex(startLogits)
         val endIndexes = getBestIndex(endLogits)
-        val origResults: MutableList<QaAnswer.Pos> = ArrayList()
+        val origResults: MutableList<Pos> = ArrayList()
         for (start in startIndexes) {
             for (end in endIndexes) {
                 if (!feature.tokenToOrigMap.containsKey(start + OUTPUT_OFFSET)) {
@@ -232,7 +232,7 @@ class QaClient(private val context: Context) : AutoCloseable {
                 if (length > MAX_ANS_LEN) {
                     continue
                 }
-                origResults.add(QaAnswer.Pos(start, end, startLogits[start] + endLogits[end]))
+                origResults.add(Pos(start, end, startLogits[start] + endLogits[end]))
             }
         }
         Collections.sort(origResults)
@@ -257,11 +257,11 @@ class QaClient(private val context: Context) : AutoCloseable {
     @WorkerThread
     @Synchronized
     private fun getBestIndex(logits: FloatArray): IntArray {
-        val tmpList: MutableList<QaAnswer.Pos> = ArrayList()
+        val tmpList: MutableList<Pos> = ArrayList()
         for (i in 0 until MAX_SEQ_LEN) {
-            tmpList.add(QaAnswer.Pos(i, i, logits[i]))
+            tmpList.add(Pos(i, i, logits[i]))
         }
-        Collections.sort(tmpList)
+        tmpList.sort()
         val indexes = IntArray(PREDICT_ANS_NUM)
         for (i in 0 until PREDICT_ANS_NUM) {
             indexes[i] = tmpList[i].start

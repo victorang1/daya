@@ -15,9 +15,8 @@ import java.util.*
  * for autoCompleteTextView.
  */
 class LoadDatasetClient(private val context: Context) {
-    private lateinit var contents: Array<String?>
-    lateinit var titles: Array<String?>
-        private set
+    private lateinit var contents: Array<String>
+    lateinit var titles: Array<String>
     lateinit private var questions: Array<Array<String>>
     private fun loadJson() {
         try {
@@ -32,7 +31,7 @@ class LoadDatasetClient(private val context: Context) {
             val jsonQuestions = map["questions"]!!
             titles = listToArray(jsonTitles)
             contents = listToArray(jsonContents)
-            questions = arrayOfNulls(jsonQuestions.size)
+            questions = arrayOf()
             var index = 0
             for (item in jsonQuestions) {
                 questions[index++] = item.toTypedArray()
@@ -42,7 +41,7 @@ class LoadDatasetClient(private val context: Context) {
         }
     }
 
-    fun getContent(index: Int): String? {
+    fun getContent(index: Int): String {
         return contents[index]
     }
 
@@ -72,8 +71,8 @@ class LoadDatasetClient(private val context: Context) {
         private const val TAG = "BertAppDemo"
         private const val JSON_DIR = "qa.json"
         private const val DIC_DIR = "vocab.txt"
-        private fun listToArray(list: List<List<String>>): Array<String?> {
-            val answer = arrayOfNulls<String>(list.size)
+        private fun listToArray(list: List<List<String>>): Array<String> {
+            val answer = arrayOf<String>()
             var index = 0
             for (item in list) {
                 answer[index++] = item[0]

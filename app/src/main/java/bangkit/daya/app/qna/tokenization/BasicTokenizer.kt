@@ -25,10 +25,11 @@ class BasicTokenizer(private val doLowerCase: Boolean) {
         val origTokens = whitespaceTokenize(cleanedText)
         val stringBuilder = StringBuilder()
         for (token in origTokens) {
+            var tempToken = ""
             if (doLowerCase) {
-                token = Ascii.toLowerCase(token)
+                tempToken = Ascii.toLowerCase(token)
             }
-            val list = runSplitOnPunc(token)
+            val list = runSplitOnPunc(tempToken)
             for (subToken in list) {
                 stringBuilder.append(subToken).append(" ")
             }

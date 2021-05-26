@@ -37,19 +37,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import bangkit.daya.R
+import bangkit.daya.app.qna.ml.LoadDatasetClient
+import bangkit.daya.app.qna.ml.QaAnswer
+import bangkit.daya.app.qna.ml.QaClient
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
 /** Activity for doing Q&A on a specific dataset  */
 class QaActivity : AppCompatActivity() {
-    private var questionEditText: TextInputEditText? = null
-    private var contentTextView: TextView? = null
+    private lateinit var questionEditText: TextInputEditText
+    private lateinit var contentTextView: TextView
     private var textToSpeech: TextToSpeech? = null
     private var questionAnswered = false
-    private var content: String? = null
+    private var content: String = ""
     private var handler: Handler? = null
     private var qaClient: QaClient? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.v(TAG, "onCreate")
         super.onCreate(savedInstanceState)
@@ -61,44 +65,43 @@ class QaActivity : AppCompatActivity() {
 
         // Show the dataset title.
         val titleText = findViewById<TextView>(R.id.title_text)
-        titleText.setText(datasetClient.getTitles().get(datasetPosition))
+        titleText.text = datasetClient.titles[datasetPosition]
 
         // Show the text content of the selected dataset.
         content = datasetClient.getContent(datasetPosition)
         contentTextView = findViewById(R.id.content_text)
-        contentTextView.setText(content)
-        contentTextView.setMovementMethod(ScrollingMovementMethod())
+        contentTextView.text = content
+        contentTextView.movementMethod = ScrollingMovementMethod()
 
         // Setup question suggestion list.
         val questionSuggestionsView = findViewById<RecyclerView>(R.id.suggestion_list)
         val adapter = QuestionAdapter(this, datasetClient.getQuestions(datasetPosition))
-        adapter.setOnQuestionSelectListener { question: String ->
-            answerQuestion(
-                question
-            )
-        }
+        adapter.setOnQuestionSelectListener(object: QuestionAdapter.OnQuestionSelectListener {
+            override fun onQuestionSelect(question: String) {
+                answerQuestion(question)
+            }
+        })
         questionSuggestionsView.adapter = adapter
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         questionSuggestionsView.layoutManager = layoutManager
 
         // Setup ask button.
         val askButton = findViewById<ImageButton>(R.id.ask_button)
-        askButton.setOnClickListener { view: View? ->
+        askButton.setOnClickListener {
             answerQuestion(
-                questionEditText!!.text.toString()
+                questionEditText.text.toString()
             )
         }
 
         // Setup text edit where users can input their question.
         questionEditText = findViewById(R.id.question_edit_text)
-        questionEditText.setOnFocusChangeListener(
-            OnFocusChangeListener { view: View?, hasFocus: Boolean ->
-                // If we already answer current question, clear the question so that user can input a new
-                // one.
-                if (hasFocus && questionAnswered) {
-                    questionEditText.setText(null)
-                }
-            })
+        questionEditText.onFocusChangeListener = OnFocusChangeListener { view: View?, hasFocus: Boolean ->
+            // If we already answer current question, clear the question so that user can input a new
+            // one.
+            if (hasFocus && questionAnswered) {
+                questionEditText.setText(null)
+            }
+        }
         questionEditText.addTextChangedListener(
             object : TextWatcher {
                 override fun beforeTextChanged(
@@ -111,7 +114,7 @@ class QaActivity : AppCompatActivity() {
 
                 override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                     // Only allow clicking Ask button if there is a question.
-                    val shouldAskButtonActive = !charSequence.toString().isEmpty()
+                    val shouldAskButtonActive = charSequence.toString().isNotEmpty()
                     askButton.isClickable = shouldAskButtonActive
                     askButton.setImageResource(
                         if (shouldAskButtonActive) R.drawable.ic_ask_active else R.drawable.ic_ask_inactive
@@ -120,13 +123,12 @@ class QaActivity : AppCompatActivity() {
 
                 override fun afterTextChanged(editable: Editable) {}
             })
-        questionEditText.setOnKeyListener(
-            View.OnKeyListener { v: View?, keyCode: Int, event: KeyEvent ->
-                if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    answerQuestion(questionEditText.getText().toString())
-                }
-                false
-            })
+        questionEditText.setOnKeyListener { v: View?, keyCode: Int, event: KeyEvent ->
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
+                answerQuestion(questionEditText.getText().toString())
+            }
+            false
+        }
 
         // Setup QA client to and background thread to run inference.
         val handlerThread = HandlerThread("QAClient")
@@ -138,7 +140,7 @@ class QaActivity : AppCompatActivity() {
     override fun onStart() {
         Log.v(TAG, "onStart")
         super.onStart()
-        handler!!.post { qaClient.loadModel() }
+        handler!!.post { qaClient?.loadModel() }
         textToSpeech = TextToSpeech(
             this
         ) { status: Int ->
@@ -153,7 +155,7 @@ class QaActivity : AppCompatActivity() {
     override fun onStop() {
         Log.v(TAG, "onStop")
         super.onStop()
-        handler!!.post { qaClient.unload() }
+        handler!!.post { qaClient?.unload() }
         if (textToSpeech != null) {
             textToSpeech!!.stop()
             textToSpeech!!.shutdown()
@@ -164,7 +166,7 @@ class QaActivity : AppCompatActivity() {
         var question = question
         question = question.trim { it <= ' ' }
         if (question.isEmpty()) {
-            questionEditText!!.setText(question)
+            questionEditText.setText(question)
             return
         }
 
@@ -174,7 +176,7 @@ class QaActivity : AppCompatActivity() {
             question += '?'
         }
         val questionToAsk = question
-        questionEditText!!.setText(questionToAsk)
+        questionEditText.setText(questionToAsk)
 
         // Delete all pending tasks.
         handler!!.removeCallbacksAndMessages(null)
@@ -186,20 +188,20 @@ class QaActivity : AppCompatActivity() {
         focusView?.clearFocus()
 
         // Reset content text view
-        contentTextView!!.text = content
+        contentTextView.text = content
         questionAnswered = false
         val runningSnackbar =
-            Snackbar.make(contentTextView!!, "Looking up answer...", Int.MAX_VALUE)
+            Snackbar.make(contentTextView, "Looking up answer...", Snackbar.LENGTH_LONG)
         runningSnackbar.show()
 
         // Run TF Lite model to get the answer.
         handler!!.post {
             val beforeTime = System.currentTimeMillis()
             val answers: List<QaAnswer> =
-                qaClient.predict(questionToAsk, content)
+                qaClient!!.predict(questionToAsk, content)
             val afterTime = System.currentTimeMillis()
             val totalSeconds = (afterTime - beforeTime) / 1000.0
-            if (!answers.isEmpty()) {
+            if (answers.isNotEmpty()) {
                 // Get the top answer
                 val topAnswer: QaAnswer = answers[0]
                 // Show the answer.
@@ -213,7 +215,7 @@ class QaActivity : AppCompatActivity() {
                             String.format("%s %.3fs.", displayMessage, totalSeconds)
                     }
                     Snackbar.make(
-                        contentTextView!!,
+                        contentTextView,
                         displayMessage,
                         Snackbar.LENGTH_LONG
                     )
@@ -232,11 +234,11 @@ class QaActivity : AppCompatActivity() {
             spanText.setSpan(
                 BackgroundColorSpan(getColor(R.color.tfe_qa_color_highlight)),
                 offset,
-                offset + answer.text.length(),
+                offset + answer.text.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
-        contentTextView!!.text = spanText
+        contentTextView.text = spanText
 
         // Use TTS to speak out the answer.
         if (textToSpeech != null) {

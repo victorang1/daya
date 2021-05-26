@@ -48,11 +48,11 @@ class QuestionAdapter(context: Context?, questions: Array<String>) :
         return questions.size
     }
 
-    fun setOnQuestionSelectListener(onQuestionSelectListener: OnQuestionSelectListener?) {
+    fun setOnQuestionSelectListener(onQuestionSelectListener: OnQuestionSelectListener) {
         this.onQuestionSelectListener = onQuestionSelectListener
     }
 
-    internal inner class MyViewHolder(itemView: View) :
+    inner class MyViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         var chip: Chip
 
@@ -63,7 +63,7 @@ class QuestionAdapter(context: Context?, questions: Array<String>) :
 
     /** Interface for callback when a question is selected.  */
     interface OnQuestionSelectListener {
-        fun onQuestionSelect(question: String?)
+        fun onQuestionSelect(question: String)
     }
 
     init {

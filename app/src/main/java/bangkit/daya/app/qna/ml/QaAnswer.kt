@@ -15,18 +15,16 @@ limitations under the License.
 package bangkit.daya.app.qna.ml
 
 /** QA Answer class.  */
-class QaAnswer(var text: String?, var pos: Pos) {
-    constructor(text: String?, start: Int, end: Int, logit: Float) : this(
-        text,
-        Pos(start, end, logit)
-    ) {
-    }
+class QaAnswer(var text: String, var pos: Pos) {
+    constructor(text: String, start: Int, end: Int, logit: Float) : this(
+        text, Pos(start, end, logit)
+    )
+}
 
-    /** Position and related information from the model.  */
-     class Pos(var start: Int, var end: Int, var logit: Float) :
-        Comparable<Pos?> {
-        override operator fun compareTo(other: Pos): Int {
-            return java.lang.Float.compare(other.logit, logit)
-        }
+class Pos(var start: Int, var end: Int, var logit: Float) :
+    Comparable<Pos> {
+
+    override fun compareTo(other: Pos): Int {
+        return other.logit.compareTo(logit)
     }
 }

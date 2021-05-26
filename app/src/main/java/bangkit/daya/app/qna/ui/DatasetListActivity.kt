@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import bangkit.daya.R
+import bangkit.daya.app.qna.ml.LoadDatasetClient
 
 /**
  * An activity representing a list of Datasets. This activity has different presentations for
@@ -35,8 +36,8 @@ class DatasetListActivity : AppCompatActivity() {
         setContentView(R.layout.tfe_qa_activity_dataset_list)
         val listView = findViewById<ListView>(R.id.dataset_list)!!
         val datasetClient = LoadDatasetClient(this)
-        val datasetAdapter: ArrayAdapter<String> = ArrayAdapter<Any?>(
-            this, android.R.layout.simple_selectable_list_item, datasetClient.getTitles()
+        val datasetAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
+            this, android.R.layout.simple_selectable_list_item, datasetClient.titles
         )
         listView.adapter = datasetAdapter
         listView.onItemClickListener =

@@ -19,7 +19,7 @@ import java.util.*
 
 /** Convert String to features that can be fed into BERT model.  */
 class FeatureConverter(
-    inputDic: Map<String?, Int?>?, doLowerCase: Boolean, maxQueryLen: Int, maxSeqLen: Int
+    inputDic: Map<String, Int>, doLowerCase: Boolean, maxQueryLen: Int, maxSeqLen: Int
 ) {
     private val tokenizer: FullTokenizer
     private val maxQueryLen: Int
@@ -32,7 +32,7 @@ class FeatureConverter(
         val origTokens = Arrays.asList(*context.trim { it <= ' ' }
             .split("\\s+").toTypedArray())
         val tokenToOrigIndex: MutableList<Int> = ArrayList()
-        var allDocTokens: MutableList<String?> = ArrayList()
+        var allDocTokens: MutableList<String> = ArrayList()
         for (i in origTokens.indices) {
             val token = origTokens[i]
             val subTokens = tokenizer.tokenize(token)
@@ -47,7 +47,7 @@ class FeatureConverter(
         if (allDocTokens.size > maxContextLen) {
             allDocTokens = allDocTokens.subList(0, maxContextLen)
         }
-        val tokens: MutableList<String?> = ArrayList()
+        val tokens: MutableList<String> = ArrayList()
         val segmentIds: MutableList<Int?> = ArrayList()
 
         // Map token index to original index (in feature.origTokens).
