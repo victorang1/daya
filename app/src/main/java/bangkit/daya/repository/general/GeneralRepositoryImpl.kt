@@ -16,14 +16,6 @@ class GeneralRepositoryImpl(private val mapService: MapService, private val cont
         return items
     }
 
-    override fun getDashboardItems(): MutableList<DashboardItem> {
-        val dashboardItems = mutableListOf<DashboardItem>()
-        dashboardItems.add(DashboardItem(R.drawable.user_navigation, "AR", R.id.action_homeFragment_to_arFragment))
-        dashboardItems.add(DashboardItem(R.drawable.user_navigation, "Object Detection", R.id.action_homeFragment_to_imageRecognitionFragment))
-        dashboardItems.add(DashboardItem(R.drawable.user_navigation, "QnA", R.id.action_homeFragment_to_datasetListActivity))
-        return dashboardItems
-    }
-
     override fun getNearbyTouristAttractionPlaces(lat: Double, lng: Double): Observable<PlaceWrapper> {
         return mapService.nearbyPlaces(
             apiKey = context.getString(R.string.google_maps_key),

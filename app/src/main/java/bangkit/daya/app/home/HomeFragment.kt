@@ -6,17 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import bangkit.daya.R
 import bangkit.daya.databinding.FragmentHomeBinding
-import org.koin.android.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentHomeBinding
-    private val homeViewModel: HomeViewModel by viewModel()
-    private val homeAdapter: HomeAdapter by lazy { HomeAdapter { destinationId ->
-        findNavController().navigate(destinationId)
-    }}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,23 +23,16 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAdapter()
-        setObserver()
-        homeViewModel.loadDashboardData()
+        binding.cvOne.setOnClickListener(this)
+        binding.cvTwo.setOnClickListener(this)
+        binding.fabIm.setOnClickListener(this)
     }
 
-    private fun initAdapter() {
-        binding.rvFeatures.layoutManager = GridLayoutManager(requireContext(), GRID_COUNT)
-        binding.rvFeatures.adapter = homeAdapter
-    }
-
-    private fun setObserver() {
-        homeViewModel.dashboardItems.observe(viewLifecycleOwner) { dashBoardItems ->
-            homeAdapter.setData(dashBoardItems)
+    override fun onClick(v: View) {
+        when (v) {
+            binding.fabIm -> findNavController().navigate(R.id.action_homeFragment_to_imageRecognitionFragment)
+            binding.cvOne -> findNavController().navigate(R.id.action_homeFragment_to_arFragment)
+            binding.cvTwo -> findNavController().navigate(R.id.action_homeFragment_to_datasetListActivity)
         }
-    }
-
-    companion object {
-        private const val GRID_COUNT = 2
     }
 }

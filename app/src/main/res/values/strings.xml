@@ -49,4 +49,6 @@
     <string name="text_comment_hint">Comment</string>
     <string name="text_post">Post</string>
     <string name="text_field_cannot_empty">Comment cannot be empty</string>
+    <string name="text_comment_description">Insert Comment</string>
+    <string name="text_menu_scan_nearby">Scan Nearby Places</string>
 </resources>
