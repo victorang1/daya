@@ -4,10 +4,6 @@ import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import kotlin.math.abs
 
-
-/**
- * Created by victor on 27-Apr-21 9:19 AM.
- */
 class DepthTransformer : ViewPager2.PageTransformer {
 
     override fun transformPage(page: View, position: Float) {

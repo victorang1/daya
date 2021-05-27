@@ -1,6 +1,7 @@
 package bangkit.daya.di
 
 import bangkit.daya.app.ar.ArFeatureViewModel
+import bangkit.daya.app.detail.DetailViewModel
 import bangkit.daya.app.home.HomeViewModel
 import bangkit.daya.app.imagerecognition.ImageRecognitionViewModel
 import bangkit.daya.app.landing.LandingViewModel
@@ -16,4 +17,5 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { ArFeatureViewModel(get()) }
     viewModel { ImageRecognitionViewModel() }
+    viewModel { DetailViewModel(get()) }
 }

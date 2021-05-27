@@ -31,7 +31,11 @@
         android:id="@+id/arFragment"
         android:name="bangkit.daya.app.ar.ArFeatureFragment"
         android:label="fragment_ar"
-        tools:layout="@layout/fragment_ar_feature" />
+        tools:layout="@layout/fragment_ar_feature" >
+        <action
+            android:id="@+id/action_arFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/landingFragment"
@@ -45,5 +49,13 @@
         android:id="@+id/datasetListActivity"
         android:name="bangkit.daya.app.qna.ui.DatasetListActivity"
         android:label="DatasetListActivity" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="bangkit.daya.app.detail.DetailFragment"
+        android:label="DetailFragment" >
+        <argument
+            android:name="placeId"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

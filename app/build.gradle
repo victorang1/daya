@@ -119,6 +119,8 @@ dependencies {
 
     // Rx Java
     implementation "io.reactivex.rxjava3:rxjava:3.0.12"
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-material:4.0.0'
 
     // Testing
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"

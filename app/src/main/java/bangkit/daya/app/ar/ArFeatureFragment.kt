@@ -3,6 +3,7 @@ package bangkit.daya.app.ar
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -143,7 +144,7 @@ class ArFeatureFragment : Fragment() {
             locationScene = LocationScene(requireActivity(), binding.arSceneView)
             locationScene!!.setMinimalRefreshing(true)
             locationScene!!.setOffsetOverlapping(true)
-            locationScene!!.setRemoveOverlapping(true)
+//            locationScene!!.setRemoveOverlapping(true)
             locationScene!!.anchorRefreshInterval = 2000
         }
 
@@ -280,11 +281,8 @@ class ArFeatureFragment : Fragment() {
         placeName.text = place.name
         markerLayoutContainer.visibility = View.GONE
         nodeLayout.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Clicked: ${place.name}",
-                Toast.LENGTH_SHORT
-            ).show()
+            val directions = ArFeatureFragmentDirections.actionArFragmentToDetailFragment(place.id)
+            findNavController().navigate(directions)
         }
         return node
     }

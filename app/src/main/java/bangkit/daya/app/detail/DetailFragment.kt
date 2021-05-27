@@ -5,56 +5,85 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import bangkit.daya.R
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import bangkit.daya.app.detail.DetailViewModel.Companion.LOAD_SUCCESS
+import bangkit.daya.databinding.FragmentDetailBinding
+import bangkit.daya.model.Review
+import com.bumptech.glide.Glide
+import org.koin.android.viewmodel.ext.android.viewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentDetailBinding
+    private val reviewAdapter: ReviewAdapter by lazy { ReviewAdapter { onButtonLikeClick(it) }}
+
+    private val detailViewModel: DetailViewModel by viewModel()
+    private val args: DetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+    ): View {
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initAdapter()
+        setObserver()
+        showLoading(true)
+        detailViewModel.loadDetail(args.placeId)
+    }
+
+    private fun initAdapter() {
+        binding.rvComment.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvComment.adapter = reviewAdapter
+    }
+
+    private fun setObserver() {
+        detailViewModel.detailData.observe(viewLifecycleOwner) { detail ->
+            binding.flErrorContainer.visibility = View.GONE
+            binding.detailPlace = detail
+            Glide.with(requireContext())
+                .load(detail.photo)
+                .into(binding.ivObject)
+        }
+
+        detailViewModel.reviews.observe(viewLifecycleOwner) { reviews ->
+            reviewAdapter.setData(reviews)
+        }
+
+        detailViewModel.detailEvent.observe(viewLifecycleOwner) { event ->
+            when (event) {
+                LOAD_SUCCESS -> showLoading(false)
             }
+        }
+
+        detailViewModel.error.observe(viewLifecycleOwner) { throwable ->
+            if (throwable != null) {
+                binding.flErrorContainer.visibility = View.VISIBLE
+                binding.error = throwable.message
+            }
+            else
+                binding.flErrorContainer.visibility = View.GONE
+            showLoading(false)
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.llContentContainer.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
+        }
+        else {
+            binding.llContentContainer.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun onButtonLikeClick(review: Review) {
+        detailViewModel.likeReview(review.postId)
     }
 }
