@@ -106,7 +106,7 @@ dependencies {
 
     // AR Core
     implementation "com.google.ar:core:$ar_core_version"
-    implementation "com.google.ar.sceneform.ux:sceneform-ux:$ar_sceneform_version"
+//    implementation "com.google.ar.sceneform.ux:sceneform-ux:$ar_sceneform_version"
 
     // Retrofit & Logging
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -115,7 +115,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
     // Ar Location
-    implementation "com.github.appoly:ARCore-Location:1.2"
+//    implementation "com.github.appoly:ARCore-Location:1.2"
 
     // Rx Java
     implementation "io.reactivex.rxjava3:rxjava:3.0.12"
@@ -132,9 +132,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.google.guava:guava:28.1-android'
     implementation ('org.tensorflow:tensorflow-lite:2.4.0')
-    implementation ('org.tensorflow:tensorflow-lite-metadata:0.1.0') {
-        exclude group: 'com.google.flatbuffers'
-    }
+    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
 
     // CameraX
 
