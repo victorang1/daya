@@ -51,4 +51,9 @@
     <string name="text_field_cannot_empty">Comment cannot be empty</string>
     <string name="text_comment_description">Insert Comment</string>
     <string name="text_menu_scan_nearby">Scan Nearby Places</string>
+
+    <string name="text_ar_description">This feature let you scan your nearby tourist attraction places and get detail information about it.</string>
+    <string name="text_im_description">This feature let you scan some related object from camera and get the detail information about it.</string>
+    <string name="text_qna_description">This feature will answer all frequently questions about related place for you.</string>
+    <string name="text_information">Information</string>
 </resources>
