@@ -32,7 +32,7 @@
     <style name="Widget.AppCompat.RatingBar.Small." parent="Widget.AppCompat.RatingBar"/>
 
     <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="boxStrokeColor">@color/app_color</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
         <item name="hintTextColor">@color/app_color</item>
         <item name="android:textColorHint">@color/app_color</item>
         <item name="android:textColor">@color/app_color</item>

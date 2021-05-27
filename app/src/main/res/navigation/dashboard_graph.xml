@@ -49,6 +49,7 @@
         android:id="@+id/datasetListActivity"
         android:name="bangkit.daya.app.qna.ui.DatasetListActivity"
         android:label="DatasetListActivity" />
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="bangkit.daya.app.detail.DetailFragment"
@@ -56,6 +57,18 @@
         <argument
             android:name="placeId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailFragment_to_insertReviewFragment"
+            app:destination="@id/insertReviewFragment" />
     </fragment>
+
+    <dialog
+        android:id="@+id/insertReviewFragment"
+        android:name="bangkit.daya.app.detail.insertreview.InsertReviewFragment"
+        android:label="InsertReviewFragment" >
+        <argument
+            android:name="placeId"
+            app:argType="string" />
+    </dialog>
 
 </navigation>

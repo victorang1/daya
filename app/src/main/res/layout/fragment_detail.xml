@@ -12,15 +12,15 @@
             type="String" />
     </data>
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        tools:context=".app.detail.DetailFragment">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            tools:context=".app.detail.DetailFragment">
 
             <LinearLayout
                 android:id="@+id/ll_content_container"
@@ -201,36 +201,50 @@
 
             </LinearLayout>
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />
+
+        <FrameLayout
+            android:id="@+id/fl_error_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"
+            >
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_marginHorizontal="@dimen/dimen_24dp"
+                android:text="@{error}"
+                tools:text="No Data"
+                android:textAlignment="center"
+                android:textColor="@color/app_color"
+                android:textSize="@dimen/text_14sp"
+                android:layout_gravity="center"
                 />
 
-            <FrameLayout
-                android:id="@+id/fl_error_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:visibility="gone"
-                >
+        </FrameLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/dimen_24dp"
-                    android:text="@{error}"
-                    tools:text="No Data"
-                    android:textAlignment="center"
-                    android:textColor="@color/app_color"
-                    android:textSize="@dimen/text_14sp"
-                    android:layout_gravity="center"
-                    />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_insert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="normal"
+            app:backgroundTint="@color/app_color"
+            app:tint="@color/white"
+            android:src="@drawable/ic_comment"
+            android:layout_margin="@dimen/dimen_16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            />
 
-            </FrameLayout>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </ScrollView>
 </layout>

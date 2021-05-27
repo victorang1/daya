@@ -1,6 +1,5 @@
 package bangkit.daya.app.detail
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,15 +30,7 @@ class DetailViewModel(private val detailRepository: DetailRepository) : ViewMode
     val detailEvent: LiveData<Int> = _detailEvent
 
     fun loadDetail(placeId: String) {
-        val detailDataSubs = detailRepository.getPlaceDetailById(placeId)
-            .doOnNext(::handleDetailResponse)
-            .doOnError { _error.postValue(it) }
-
-        val reviewSubs = detailRepository.getPlaceReviews(placeId)
-            .doOnNext(::handleReviewResponse)
-            .doOnError { _error.postValue(it) }
-
-        val detailSubs = Observable.merge(detailDataSubs, reviewSubs)
+        val detailSubs = Observable.merge(requestDetailReviews(placeId), requestPlaceReviews(placeId))
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
             .subscribe({
@@ -49,6 +40,18 @@ class DetailViewModel(private val detailRepository: DetailRepository) : ViewMode
             })
 
         mSubscriptions.add(detailSubs)
+    }
+
+    private fun requestDetailReviews(placeId: String): Observable<ApiResponse<DetailPlaceResponse>> {
+       return detailRepository.getPlaceDetailById(placeId)
+            .doOnNext(::handleDetailResponse)
+            .doOnError { _error.postValue(it) }
+    }
+
+    private fun requestPlaceReviews(placeId: String): Observable<ApiResponse<List<ReviewResponse>>> {
+        return detailRepository.getPlaceReviews(placeId)
+            .doOnNext(::handleReviewResponse)
+            .doOnError { _error.postValue(it) }
     }
 
     private fun handleDetailResponse(response: ApiResponse<DetailPlaceResponse>?) {
@@ -96,6 +99,14 @@ class DetailViewModel(private val detailRepository: DetailRepository) : ViewMode
             .observeOn(Schedulers.computation())
             .subscribe()
         mSubscriptions.add(likeSubs)
+    }
+
+    fun refreshReview(placeId: String) {
+        val subscriptions = requestPlaceReviews(placeId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
+            .subscribe(::handleReviewResponse)
+        mSubscriptions.add(subscriptions)
     }
 
     override fun onCleared() {

@@ -10,7 +10,7 @@ data class ReviewResponse(
     @SerializedName("created_at")
     val createdAt: String,
     @SerializedName("user_avatar")
-    val avatar: String,
+    val avatar: String?,
     val totalLike: Int,
     val isFavorite: Int
 )

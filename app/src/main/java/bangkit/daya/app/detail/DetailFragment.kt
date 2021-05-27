@@ -5,18 +5,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import bangkit.daya.app.detail.DetailViewModel.Companion.LOAD_SUCCESS
+import bangkit.daya.app.detail.insertreview.InsertReviewFragment
+import bangkit.daya.app.detail.insertreview.InsertReviewViewModel
 import bangkit.daya.databinding.FragmentDetailBinding
 import bangkit.daya.model.Review
 import com.bumptech.glide.Glide
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentDetailBinding
-    private val reviewAdapter: ReviewAdapter by lazy { ReviewAdapter { onButtonLikeClick(it) }}
+    private val reviewAdapter: ReviewAdapter by lazy { ReviewAdapter { onButtonLikeClick(it) } }
 
     private val detailViewModel: DetailViewModel by viewModel()
     private val args: DetailFragmentArgs by navArgs()
@@ -33,8 +38,33 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         setObserver()
+        setListener()
         showLoading(true)
         detailViewModel.loadDetail(args.placeId)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(InsertReviewFragment.INSERT_REVIEW_REQUEST_CODE) { _, bundle: Bundle ->
+            when (bundle.getInt(InsertReviewFragment.INSERT_REVIEW_EVENT)) {
+                InsertReviewViewModel.INSERT_SUCCESS -> {
+                    detailViewModel.refreshReview(args.placeId)
+                    Toast.makeText(requireContext(), "Insert Success", Toast.LENGTH_SHORT).show()
+                }
+                InsertReviewViewModel.INSERT_ERROR -> {
+                    Toast.makeText(requireContext(), "Insert Failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    override fun onClick(v: View) {
+        when (v) {
+            binding.fabInsert -> {
+                val directions = DetailFragmentDirections.actionDetailFragmentToInsertReviewFragment(args.placeId)
+                findNavController().navigate(directions)
+            }
+        }
     }
 
     private fun initAdapter() {
@@ -65,8 +95,7 @@ class DetailFragment : Fragment() {
             if (throwable != null) {
                 binding.flErrorContainer.visibility = View.VISIBLE
                 binding.error = throwable.message
-            }
-            else
+            } else
                 binding.flErrorContainer.visibility = View.GONE
             showLoading(false)
         }
@@ -76,11 +105,14 @@ class DetailFragment : Fragment() {
         if (isLoading) {
             binding.llContentContainer.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             binding.llContentContainer.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    private fun setListener() {
+        binding.fabInsert.setOnClickListener(this)
     }
 
     private fun onButtonLikeClick(review: Review) {
