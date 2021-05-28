@@ -10,9 +10,9 @@ class GeneralRepositoryImpl(private val mapService: MapService, private val cont
 
     override fun getLandingItems(): MutableList<LandingItem> {
         val items = mutableListOf<LandingItem>()
-        items.add(LandingItem("Neque porro quisquam est qui dolorem ipsum quia dolor sit amet", R.drawable.user_navigation))
-        items.add(LandingItem("Neque porro quisquam est qui dolorem ipsum quia dolor sit amet", R.drawable.user_navigation))
-        items.add(LandingItem("Neque porro quisquam est qui dolorem ipsum quia dolor sit amet", R.drawable.user_navigation))
+        items.add(LandingItem("Find any tourist attractions around you..", R.drawable.landing_1))
+        items.add(LandingItem("Gain insights about that place!", R.drawable.landing_2))
+        items.add(LandingItem("Share to the community what you know", R.drawable.landing_3))
         return items
     }
 
