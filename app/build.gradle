@@ -41,6 +41,10 @@ android {
         }
     }
 
+    configurations.all {
+        exclude group: 'com.google.flatbuffers', module: ''
+    }
+
     aaptOptions {
         noCompress "tflite"
     }
@@ -135,9 +139,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.google.guava:guava:28.1-android'
     implementation ('org.tensorflow:tensorflow-lite:2.4.0')
-    implementation ('org.tensorflow:tensorflow-lite-metadata:0.1.0') {
-        exclude group: 'com.google.flatbuffers'
-    }
+    implementation ('org.tensorflow:tensorflow-lite-metadata:0.1.0')
 
     // CameraX
 
