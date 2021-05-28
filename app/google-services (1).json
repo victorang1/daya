@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_number": "102893283349",
+    "firebase_url": "https://daya-b21-cap0034-default-rtdb.firebaseio.com",
+    "project_id": "daya-b21-cap0034",
+    "storage_bucket": "daya-b21-cap0034.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102893283349:android:4b53338027420a78db861c",
+        "android_client_info": {
+          "package_name": "bangkit.daya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102893283349-3aajkgrqe7q8s6o8ks48oe50vja6nlfj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bangkit.daya",
+            "certificate_hash": "c3abf7ff1a025c08caacac6187cab91df87cbcdb"
+          }
+        },
+        {
+          "client_id": "102893283349-3e092malbirj1drn3bmjvugcmv2hcktl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bangkit.daya",
+            "certificate_hash": "09cf10ac36d242cf5e7b3b88a02799fbc2773153"
+          }
+        },
+        {
+          "client_id": "102893283349-ntl5pdu33969pt6mhcfuns19degkgqo3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bangkit.daya",
+            "certificate_hash": "ede9741587d84294cbf606388ccdc8a91d0b5584"
+          }
+        },
+        {
+          "client_id": "102893283349-ailim8iftneqah6ed5ijg6rf5cjgn43p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRGHqpFI-rnZeKwZYPO6fEyVhvLUIZumw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102893283349-ailim8iftneqah6ed5ijg6rf5cjgn43p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
