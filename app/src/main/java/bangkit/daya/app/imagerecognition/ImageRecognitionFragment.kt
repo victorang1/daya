@@ -21,25 +21,22 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import bangkit.daya.databinding.FragmentImageRecognitionBinding
 import bangkit.daya.ml.PlaceModel
+import bangkit.daya.model.Recognition
 import bangkit.daya.util.YuvToRgbConverter
 import com.google.gson.Gson
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.tensorflow.lite.DataType
 import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.model.Model
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.util.concurrent.Executors
 
-
-typealias RecognitionListener = (recognition: TensorBuffer) -> Unit
+typealias RecognitionListener = (recognition: List<Recognition>) -> Unit
 
 class ImageRecognitionFragment : Fragment() {
 
     private lateinit var binding: FragmentImageRecognitionBinding
     private val imageRecognitionViewModel: ImageRecognitionViewModel by viewModel()
 
-    private lateinit var preview: Preview
     private lateinit var imageAnalyzer: ImageAnalysis
     private val cameraExecutor = Executors.newSingleThreadExecutor()
 
@@ -92,7 +89,7 @@ class ImageRecognitionFragment : Fragment() {
                 .build()
 
             imageAnalyzer = ImageAnalysis.Builder()
-                .setTargetResolution(Size(160, 160))
+                .setTargetResolution(Size(224, 224))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also { analysisUseCase: ImageAnalysis ->
@@ -151,21 +148,20 @@ class ImageRecognitionFragment : Fragment() {
 
         override fun analyze(imageProxy: ImageProxy) {
 
+            val items = mutableListOf<Recognition>()
+
             val tfImage = TensorImage.fromBitmap(toBitmap(imageProxy))
 
-            val inputFeature0 = TensorBuffer.createFixedSize(
-                intArrayOf(1, 160, 160, 3),
-                DataType.FLOAT32
-            )
-            inputFeature0.loadBuffer(tfImage.buffer)
+            val outputs = placeModel.process(tfImage)
+                .probabilityAsCategoryList.apply {
+                    sortByDescending { it.score }
+                }.take(MAX_RESULT_DISPLAY)
 
-//            val array = tfImage.buffer.asIntBuffer().array()
-//            Log.d("<RESULT>", "analyze: ${Gson().toJson(array.size)}")
+            for (output in outputs) {
+                items.add(Recognition(output.label, output.score))
+            }
 
-            val outputs = placeModel.process(inputFeature0)
-                .outputFeature0AsTensorBuffer
-
-            listener(outputs)
+            listener(items)
 
             imageProxy.close()
         }
@@ -216,5 +212,6 @@ class ImageRecognitionFragment : Fragment() {
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private const val MAX_RESULT_DISPLAY = 1
     }
 }
