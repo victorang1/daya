@@ -73,7 +73,8 @@
                             android:text="@{detailPlace.name}"
                             android:textSize="@dimen/text_18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"
+                            tools:text="@string/about_borobudur"/>
 
                         <RatingBar
                             style="@style/Widget.AppCompat.RatingBar.Small"
@@ -155,7 +156,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/about"
                         android:textStyle="bold"
-                        android:textColor="@color/dark_gray"
                         android:layout_below="@+id/tr_time"
                         android:layout_marginStart="@dimen/dimen_4dp"
                         android:layout_marginTop="@dimen/dimen_8dp" />
@@ -189,7 +189,6 @@
                     android:layout_marginStart="@dimen/dimen_8dp"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:text="@string/review"
-                    android:textColor="@color/dark_gray"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -242,7 +241,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_16dp"
             app:fabSize="normal"
-            app:backgroundTint="@color/app_color"
+            app:backgroundTint="@color/red"
             app:tint="@color/white"
             android:src="@drawable/ic_comment"
             android:contentDescription="@string/text_comment_description"

@@ -17,6 +17,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border"
             android:paddingHorizontal="@dimen/dimen_6dp"
             android:paddingVertical="@dimen/dimen_6dp">
 
@@ -36,7 +37,7 @@
                 android:layout_marginStart="@dimen/dimen_4dp"
                 android:layout_marginTop="@dimen/dimen_2dp"
                 android:layout_marginBottom="@dimen/dimen_4dp"
-                android:textSize="@dimen/text_8sp"
+                android:textSize="@dimen/text_10sp"
                 android:text="@{review.username}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

@@ -45,8 +45,8 @@
         feature
     </string>
     <string name="text_take_photo">Take Photo</string>
-    <string name="text_insert_comment">Write your comment</string>
-    <string name="text_comment_hint">Comment</string>
+    <string name="text_insert_comment">Share more about this place</string>
+    <string name="text_comment_hint">Type information about this place here</string>
     <string name="text_post">Post</string>
     <string name="text_field_cannot_empty">Comment cannot be empty</string>
     <string name="text_comment_description">Insert Comment</string>
