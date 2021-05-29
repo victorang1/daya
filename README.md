@@ -48,14 +48,14 @@ To run the project use the following command in the Android Studio terminal:
 daya/
 └── app/
     └── src/
-	    ├── java/ 			  # App features
-	    ├── assets/ 		  # Model for QnA & prediction
-	    │   ├── labels.txt
-	    │   ├── model.tflite
-	    │   └── qa.json
-            ├── ml/                       # Model for Image Classification
-	        └── PlaceModel.tflite
-	    └── res/ 			  # App resources
+        ├── java/ 		# App features
+        ├── assets/ 		# Model for QnA & prediction
+        │   ├── labels.txt
+        │   ├── model.tflite
+        │   └── qa.json
+        ├── ml/                 # Model for Image Classification
+	└── PlaceModel.tflite
+        └── res/ 		# App resources
 ```
 
 ## Creators
