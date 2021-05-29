@@ -54,15 +54,17 @@ To run the project use the following command in the Android Studio terminal:
 ```
 daya/
 └── app/
+    ├── MachineLearning/ImageClassification/	# Notebook Files and Dataset
     └── src/
-        ├── java/ 		# App features
-        ├── assets/ 		# Model for QnA & prediction
+        ├── java/ 				# App Features
+        ├── assets/ 				# Model for QnA & Prediction
         │   ├── labels.txt
         │   ├── model.tflite
         │   └── qa.json
-        ├── ml/                 # Model for Image Classification
-	└── PlaceModel.tflite
-        └── res/ 		# App resources
+        ├── ml/                 		# Model for Image Classification
+	    └── PlaceModel.tflite
+        └── res/ 				# App Resources
+
 ```
 
 
