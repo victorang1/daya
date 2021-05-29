@@ -18,9 +18,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import bangkit.daya.databinding.FragmentImageRecognitionBinding
@@ -109,7 +106,7 @@ class ImageRecognitionFragment : Fragment() {
             binding.fabRetry.visibility = visibility
         }
 
-        imageRecognitionViewModel.modelResultLabels.observe(viewLifecycleOwner) { results ->
+        imageRecognitionViewModel.modelResultLabels.observe(viewLifecycleOwner) {
             startCamera()
         }
     }
@@ -169,7 +166,7 @@ class ImageRecognitionFragment : Fragment() {
             reader.lineSequence().forEach { resultRead ->
                 label = resultRead.split("|")
                 if (!label.isNullOrEmpty()) {
-                    tempResults.add(ModelResult(label[0], label[1]))
+                    tempResults.add(ModelResult(label[0], label[1], label[2]))
                 }
             }
             reader.close()
@@ -234,9 +231,7 @@ class ImageRecognitionFragment : Fragment() {
 
             val image = imageProxy.image ?: return null
 
-            // Initialise Buffer
             if (!::bitmapBuffer.isInitialized) {
-                // The image rotation and RGB image buffer are initialized only once
                 Log.d(TAG, "Initalise toBitmap()")
                 rotationMatrix = Matrix()
                 rotationMatrix.postRotate(imageProxy.imageInfo.rotationDegrees.toFloat())
@@ -245,10 +240,8 @@ class ImageRecognitionFragment : Fragment() {
                 )
             }
 
-            // Pass image to an image analyser
             yuvToRgbConverter.yuvToRgb(image, bitmapBuffer)
 
-            // Create the Bitmap in the correct orientation
             return Bitmap.createBitmap(
                 bitmapBuffer,
                 0,

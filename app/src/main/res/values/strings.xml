@@ -59,4 +59,5 @@
     <string name="text_movable_information">This button is movable</string>
     <string name="text_information">Information</string>
     <string name="text_posting">Posting...</string>
+    <string name="text_feature_not_available">This feature is currently not available</string>
 </resources>

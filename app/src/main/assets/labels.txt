@@ -1,5 +1,5 @@
-besakih|ChIJT_fsBFgd0i0Rc_xKVO2C8v8
-borobudur|ChIJl9anCfCMei4Ry8NNdDRD0w0
-gwk|ChIJx97hVM9E0i0RUVpPBj5miBk
-jamgadang|ChIJp2TxH7041S8RGdxwGIgz6gw
-surabaya|ChIJMUjh3Zf71y0R-1n5AxwJaJ4
+besakih|Pura Besakih|ChIJT_fsBFgd0i0Rc_xKVO2C8v8
+borobudur|Candi Borobudur|ChIJl9anCfCMei4Ry8NNdDRD0w0
+gwk|Garuda Wisnu Kencana|ChIJx97hVM9E0i0RUVpPBj5miBk
+jamgadang|Jam Gadang|ChIJp2TxH7041S8RGdxwGIgz6gw
+surabaya|Patung Suro dan Boyo|ChIJMUjh3Zf71y0R-1n5AxwJaJ4

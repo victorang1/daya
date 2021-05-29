@@ -34,6 +34,7 @@ class ImageRecognitionViewModel : ViewModel() {
         }
         tempResult?.let {
             recognition[0].placeId = it.placeId
+            recognition[0].label = it.labelForDisplay
         }
         _fabRetryVisibility.postValue(View.VISIBLE)
         _showedItem.postValue(recognition[0])
