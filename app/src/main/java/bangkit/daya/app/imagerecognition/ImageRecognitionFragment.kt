@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -18,7 +19,11 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import bangkit.daya.databinding.FragmentImageRecognitionBinding
 import bangkit.daya.ml.PlaceModel
 import bangkit.daya.model.Recognition
@@ -28,6 +33,8 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.model.Model
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.util.concurrent.Executors
 
 typealias RecognitionListener = (recognition: List<Recognition>) -> Unit
@@ -35,6 +42,7 @@ typealias RecognitionListener = (recognition: List<Recognition>) -> Unit
 class ImageRecognitionFragment : Fragment() {
 
     private lateinit var binding: FragmentImageRecognitionBinding
+    private val recognitionAdapter: RecognitionAdapter by lazy { RecognitionAdapter() }
     private val imageRecognitionViewModel: ImageRecognitionViewModel by viewModel()
 
     private lateinit var imageAnalyzer: ImageAnalysis
@@ -50,6 +58,12 @@ class ImageRecognitionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.fabRetry.visibility = View.GONE
+        binding.fabRetry.setOnClickListener {
+            imageRecognitionViewModel.resetValue()
+        }
+        setObserver()
+        initAdapter()
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -57,8 +71,6 @@ class ImageRecognitionFragment : Fragment() {
                 requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
-
-        binding.btnCapture.setOnClickListener { takePhoto() }
     }
 
     override fun onRequestPermissionsResult(
@@ -79,6 +91,18 @@ class ImageRecognitionFragment : Fragment() {
         }
     }
 
+    private fun setObserver() {
+        imageRecognitionViewModel.showedItem.observe(viewLifecycleOwner) { result ->
+            binding.fabRetry.visibility = View.VISIBLE
+            recognitionAdapter.setData(result)
+        }
+    }
+
+    private fun initAdapter() {
+        binding.rvResult.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvResult.adapter = recognitionAdapter
+    }
+
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
@@ -96,7 +120,13 @@ class ImageRecognitionFragment : Fragment() {
                     analysisUseCase.setAnalyzer(
                         cameraExecutor,
                         ImageAnalyzer(requireContext()) { items ->
-                            Log.d("<RESULT>", "startCamera: ${Gson().toJson(items)}")
+                            val showedItem = imageRecognitionViewModel.showedItem.value?.label ?: ""
+                            if (showedItem == "No object is found" || showedItem == "") {
+                                imageRecognitionViewModel.updateData(items)
+                            }
+                            else {
+                                binding.fabRetry.visibility = View.GONE
+                            }
                         })
                 }
 
@@ -117,8 +147,10 @@ class ImageRecognitionFragment : Fragment() {
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
-    private fun takePhoto() {
-
+    private fun readResultFromFile(label: String) {
+        val reader = BufferedReader(
+            InputStreamReader(requireActivity().assets.open("labels.txt"))
+        )
     }
 
     private fun allPermissionsGranted() =
@@ -213,5 +245,14 @@ class ImageRecognitionFragment : Fragment() {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val MAX_RESULT_DISPLAY = 1
+    }
+
+    fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: (T) -> Unit) {
+        observe(owner, object: Observer<T> {
+            override fun onChanged(value: T) {
+                removeObserver(this)
+                observer(value)
+            }
+        })
     }
 }

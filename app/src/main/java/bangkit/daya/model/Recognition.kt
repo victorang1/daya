@@ -6,5 +6,7 @@ data class Recognition(val label:String, val confidence:Float) {
         return "$label / $probabilityString"
     }
 
-    val probabilityString = String.format("%.1f%%", confidence * 100.0f)
+    val probabilityString = if (confidence == 0F) {
+        ""
+    } else String.format("%.1f%%", confidence * 100.0f)
 }
