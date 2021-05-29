@@ -10,7 +10,7 @@
 
 ## Introduction
 
-**daya is a mobile-based application for facilitating users’ discovery of cultural heritages or such things. This application can be used by users from anywhere or when the user visit some places in Indonesia. With some features contained in the application, the users can get information about several places that they want to know.**
+daya is a mobile-based application for facilitating users’ discovery of cultural heritages or such things. This application can be used by users from anywhere or when the user visit some places in Indonesia. With some features contained in the application, the users can get information about several places that they want to know.
 
 ## Technologies
 
