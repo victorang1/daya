@@ -20,7 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
-            tools:context=".app.detail.DetailFragment">
+            tools:context=".app.detail.DetailFragment"
+            tools:layout_editor_absoluteX="-16dp"
+            tools:layout_editor_absoluteY="-72dp">
 
             <LinearLayout
                 android:id="@+id/ll_content_container"
@@ -52,37 +54,36 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
+                        android:contentDescription="@string/object_pict"
                         android:scaleType="fitXY"
-                        tools:src="@drawable/borobudur"
-                        android:contentDescription="@string/object_pict" />
+                        tools:src="@drawable/borobudur" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_gravity="bottom"
                         android:layout_marginStart="@dimen/dimen_8dp"
                         android:layout_marginBottom="@dimen/dimen_8dp"
                         android:background="@color/background"
-                        android:padding="@dimen/dimen_4dp">
+                        android:orientation="vertical"
+                        android:padding="@dimen/dimen_8dp">
 
                         <TextView
                             android:id="@+id/tv_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{detailPlace.name}"
-                            android:textSize="@dimen/text_18sp"
-                            android:textStyle="bold"
                             android:textColor="@color/white"
-                            tools:text="@string/about_borobudur"/>
+                            android:textSize="@dimen/text_24sp"
+                            android:textStyle="bold"
+                            tools:text="@string/borobudur" />
 
                         <RatingBar
                             style="@style/Widget.AppCompat.RatingBar.Small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </LinearLayout>
 
@@ -91,32 +92,32 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_4dp">
+                    android:layout_marginStart="@dimen/dimen_4dp"
+                    android:layout_marginEnd="@dimen/dimen_8dp">
 
                     <TableRow
                         android:id="@+id/tr_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_8dp">
+                        android:layout_marginTop="@dimen/dimen_12dp">
 
                         <ImageView
                             android:id="@+id/iv_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_4dp"
-                            android:src="@drawable/ic_location"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/location_logo" />
+                            android:layout_marginStart="@dimen/dimen_6dp"
+                            android:contentDescription="@string/location_logo"
+                            android:src="@drawable/ic_location" />
 
                         <TextView
                             android:id="@+id/tv_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_4dp"
-                            android:layout_marginEnd="@dimen/dimen_4dp"
-                            android:textSize="@dimen/text_12sp"
-                            android:text="@{detailPlace.location}"
                             android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/dimen_6dp"
+                            android:layout_marginEnd="@dimen/dimen_4dp"
+                            android:text="@{detailPlace.location}"
+                            android:textSize="@dimen/text_14sp"
                             tools:text="@string/borobudur" />
 
                     </TableRow>
@@ -132,20 +133,19 @@
                             android:id="@+id/iv_opening"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_4dp"
-                            android:src="@drawable/ic_time"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/time_logo" />
+                            android:layout_marginStart="@dimen/dimen_6dp"
+                            android:contentDescription="@string/time_logo"
+                            android:src="@drawable/ic_time" />
 
                         <TextView
                             android:id="@+id/tv_opening_info"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_4dp"
-                            android:layout_marginEnd="@dimen/dimen_4dp"
-                            android:textSize="@dimen/text_12sp"
                             android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/dimen_6dp"
+                            android:layout_marginEnd="@dimen/dimen_4dp"
                             android:text="@{detailPlace.openTime}"
+                            android:textSize="@dimen/text_14sp"
                             tools:text="@string/borobudur" />
 
                     </TableRow>
@@ -154,28 +154,29 @@
                         android:id="@+id/label_about"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/about"
-                        android:textStyle="bold"
                         android:layout_below="@+id/tr_time"
                         android:layout_marginStart="@dimen/dimen_4dp"
-                        android:layout_marginTop="@dimen/dimen_8dp" />
-
+                        android:layout_marginTop="@dimen/dimen_8dp"
+                        android:text="@string/about"
+                        android:textSize="@dimen/text_18sp"
+                        android:textStyle="bold" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/card_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/label_about"
-                        app:cardCornerRadius="@dimen/dimen_4dp"
-                        android:layout_margin="@dimen/dimen_4dp">
+                        android:layout_margin="@dimen/dimen_6dp"
+                        android:layout_marginEnd="@dimen/dimen_6dp"
+                        app:cardCornerRadius="@dimen/dimen_4dp">
 
                         <TextView
                             android:id="@+id/tv_information"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/dimen_8dp"
-                            android:textSize="@dimen/text_12sp"
                             android:text="@{detailPlace.description}"
+                            android:textSize="@dimen/text_14sp"
                             tools:text="@string/about_borobudur" />
 
                     </androidx.cardview.widget.CardView>
@@ -189,6 +190,7 @@
                     android:layout_marginStart="@dimen/dimen_8dp"
                     android:layout_marginTop="@dimen/dimen_8dp"
                     android:text="@string/review"
+                    android:textSize="@dimen/text_18sp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -196,7 +198,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dimen_8dp"
-                    android:padding="@dimen/dimen_8dp" />
+                    android:padding="@dimen/dimen_6dp" />
 
             </LinearLayout>
 
