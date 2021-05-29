@@ -54,7 +54,7 @@ daya/
         │   ├── model.tflite
         │   └── qa.json
         ├── ml/                 # Model for Image Classification
-	└── PlaceModel.tflite
+	    └── PlaceModel.tflite
         └── res/ 		# App resources
 ```
 
