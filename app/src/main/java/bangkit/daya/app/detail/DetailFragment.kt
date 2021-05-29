@@ -1,5 +1,6 @@
 package bangkit.daya.app.detail
 
+import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,12 +11,17 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import bangkit.daya.R
 import bangkit.daya.app.detail.DetailViewModel.Companion.LOAD_SUCCESS
 import bangkit.daya.app.detail.insertreview.InsertReviewFragment
 import bangkit.daya.app.detail.insertreview.InsertReviewViewModel
 import bangkit.daya.databinding.FragmentDetailBinding
 import bangkit.daya.model.Review
+import bangkit.daya.pref.AppPreferences
 import com.bumptech.glide.Glide
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetView
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailFragment : Fragment(), View.OnClickListener {
@@ -25,6 +31,8 @@ class DetailFragment : Fragment(), View.OnClickListener {
 
     private val detailViewModel: DetailViewModel by viewModel()
     private val args: DetailFragmentArgs by navArgs()
+
+    private val pref: AppPreferences by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +45,9 @@ class DetailFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.fabInsert.visibility = View.GONE
+        if (pref.shouldShowMovableInformation()) {
+            createTargetMovableInformation()
+        }
         initAdapter()
         setObserver()
         setListener()
@@ -119,5 +130,25 @@ class DetailFragment : Fragment(), View.OnClickListener {
 
     private fun onButtonLikeClick(review: Review) {
         detailViewModel.likeReview(review.postId)
+    }
+
+    private fun createTargetMovableInformation() {
+        TapTargetView.showFor(requireActivity(),
+            TapTarget.forView(binding.fabInsert, getString(R.string.text_information), getString(R.string.text_movable_information))
+                .targetCircleColor(R.color.tap_target_circle_color)
+                .titleTextColor(R.color.tap_target_title_text_color)
+                .descriptionTextColor(R.color.tap_target_title_text_color)
+                .outerCircleColor(R.color.tap_target_outer_circle_color)
+                .textTypeface(Typeface.SANS_SERIF)
+                .tintTarget(false)
+                .cancelable(false)
+                .targetRadius(60),
+            object: TapTargetView.Listener() {
+                override fun onTargetClick(view: TapTargetView?) {
+                    super.onTargetClick(view)
+                    pref.disableShowMovableInformation()
+                }
+            }
+        )
     }
 }

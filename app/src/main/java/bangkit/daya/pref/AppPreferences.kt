@@ -17,8 +17,18 @@ class AppPreferences(context: Context) {
         edit.apply()
     }
 
+    fun shouldShowMovableInformation(): Boolean {
+        return pref.getBoolean(PREF_DETAIL_FIRST_TIME, true)
+    }
+
+    fun disableShowMovableInformation() {
+        edit.putBoolean(PREF_DETAIL_FIRST_TIME, false)
+        edit.apply()
+    }
+
     companion object {
         private const val PREF_NAME = "daya.pref"
         private const val PREF_FIRST_TIME = "PREF_FIRST_TIME"
+        private const val PREF_DETAIL_FIRST_TIME = "PREF_DETAIL_FIRST_TIME"
     }
 }

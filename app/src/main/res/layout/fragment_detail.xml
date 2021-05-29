@@ -235,7 +235,7 @@
 
         </FrameLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <bangkit.daya.view.MovableFloatingActionButton
             android:id="@+id/fab_insert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
