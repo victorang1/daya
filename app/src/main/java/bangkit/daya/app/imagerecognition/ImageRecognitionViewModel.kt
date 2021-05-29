@@ -25,7 +25,7 @@ class ImageRecognitionViewModel : ViewModel() {
             return
         }
         val res = recognition[0]
-        if (res.confidence < 0.75) {
+        if (res.confidence < MODEL_THRESHOLD) {
             _showedItem.postValue(notFound)
             return
         }
@@ -48,7 +48,11 @@ class ImageRecognitionViewModel : ViewModel() {
         _showedItem.postValue(Recognition("", 0F))
     }
 
-    fun hideRetryButton() {
+    private fun hideRetryButton() {
         _fabRetryVisibility.postValue(View.GONE)
+    }
+
+    companion object {
+        private const val MODEL_THRESHOLD = 0.5
     }
 }
