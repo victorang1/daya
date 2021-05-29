@@ -36,6 +36,7 @@ class DetailFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.fabInsert.visibility = View.GONE
         initAdapter()
         setObserver()
         setListener()
@@ -83,6 +84,7 @@ class DetailFragment : Fragment(), View.OnClickListener {
 
         detailViewModel.reviews.observe(viewLifecycleOwner) { reviews ->
             reviewAdapter.setData(reviews)
+            binding.fabInsert.visibility = View.VISIBLE
         }
 
         detailViewModel.detailEvent.observe(viewLifecycleOwner) { event ->
