@@ -37,7 +37,11 @@ class InsertReviewFragment : BottomSheetDialogFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v) {
-            binding.btnPost -> postReview()
+            binding.btnPost -> {
+                binding.btnPost.text = getString(R.string.text_posting)
+                binding.btnPost.isEnabled = false
+                postReview()
+            }
         }
     }
 

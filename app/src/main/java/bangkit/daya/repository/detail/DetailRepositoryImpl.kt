@@ -4,6 +4,7 @@ import bangkit.daya.service.AppService
 import bangkit.daya.service.datamodel.*
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.rxjava3.core.Observable
+import retrofit2.Call
 
 class DetailRepositoryImpl(private val appService: AppService) : DetailRepository {
 
@@ -17,7 +18,8 @@ class DetailRepositoryImpl(private val appService: AppService) : DetailRepositor
         val insertPostRequest = InsertReviewRequest(
             description,
             getUsername(),
-            getUserId()
+            getUserId(),
+            getAvatar()
         )
         return appService.insertReview(placeId, insertPostRequest)
     }
@@ -33,5 +35,10 @@ class DetailRepositoryImpl(private val appService: AppService) : DetailRepositor
     private fun getUsername(): String {
         val currentUser = FirebaseAuth.getInstance().currentUser
         return currentUser?.displayName ?: currentUser?.email ?: "Anonymous"
+    }
+
+    private fun getAvatar(): String {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        return currentUser?.photoUrl.toString() ?: ""
     }
 }

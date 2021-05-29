@@ -44,7 +44,11 @@
     <fragment
         android:id="@+id/imageRecognitionFragment"
         android:name="bangkit.daya.app.imagerecognition.ImageRecognitionFragment"
-        android:label="ImageRecognitionFragment" />
+        android:label="ImageRecognitionFragment" >
+        <action
+            android:id="@+id/action_imageRecognitionFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <activity
         android:id="@+id/datasetListActivity"
         android:name="bangkit.daya.app.qna.ui.DatasetListActivity"

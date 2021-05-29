@@ -1,9 +1,11 @@
 package bangkit.daya.app.detail.insertreview
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bangkit.daya.repository.detail.DetailRepository
+import com.google.gson.Gson
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -19,8 +21,10 @@ class InsertReviewViewModel(private val detailRepository: DetailRepository): Vie
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
             .subscribe({
+                Log.d("<RESULT>", "insertReview: ${Gson().toJson(it)}")
                 _insertReviewEvent.postValue(INSERT_SUCCESS)
             }, {
+                Log.d("<RESULT>", "insertReview: ${Gson().toJson(it)}")
                 _insertReviewEvent.postValue(INSERT_ERROR)
             })
         mSubscriptions.add(insertSubs)

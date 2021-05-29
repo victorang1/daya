@@ -5,6 +5,7 @@ import bangkit.daya.service.datamodel.DetailPlaceResponse
 import bangkit.daya.service.datamodel.EmptyResponse
 import bangkit.daya.service.datamodel.ReviewResponse
 import io.reactivex.rxjava3.core.Observable
+import retrofit2.Call
 
 interface DetailRepository {
 

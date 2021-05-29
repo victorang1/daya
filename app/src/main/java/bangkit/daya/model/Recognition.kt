@@ -1,6 +1,6 @@
 package bangkit.daya.model
 
-data class Recognition(val label:String, val confidence:Float) {
+data class Recognition(val label:String, val confidence:Float, var placeId: String = "") {
 
     override fun toString():String{
         return "$label / $probabilityString"

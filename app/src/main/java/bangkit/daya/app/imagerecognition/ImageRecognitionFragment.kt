@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -26,9 +25,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import bangkit.daya.databinding.FragmentImageRecognitionBinding
 import bangkit.daya.ml.PlaceModel
+import bangkit.daya.model.ModelResult
 import bangkit.daya.model.Recognition
 import bangkit.daya.util.YuvToRgbConverter
-import com.google.gson.Gson
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.support.image.TensorImage
@@ -42,7 +44,13 @@ typealias RecognitionListener = (recognition: List<Recognition>) -> Unit
 class ImageRecognitionFragment : Fragment() {
 
     private lateinit var binding: FragmentImageRecognitionBinding
-    private val recognitionAdapter: RecognitionAdapter by lazy { RecognitionAdapter() }
+    private val recognitionAdapter: RecognitionAdapter by lazy {
+        RecognitionAdapter {
+            val directions =
+                ImageRecognitionFragmentDirections.actionImageRecognitionFragmentToDetailFragment(it)
+            findNavController().navigate(directions)
+        }
+    }
     private val imageRecognitionViewModel: ImageRecognitionViewModel by viewModel()
 
     private lateinit var imageAnalyzer: ImageAnalysis
@@ -58,14 +66,13 @@ class ImageRecognitionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.fabRetry.visibility = View.GONE
         binding.fabRetry.setOnClickListener {
             imageRecognitionViewModel.resetValue()
         }
         setObserver()
         initAdapter()
         if (allPermissionsGranted()) {
-            startCamera()
+            readResultFromFile()
         } else {
             ActivityCompat.requestPermissions(
                 requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
@@ -79,7 +86,7 @@ class ImageRecognitionFragment : Fragment() {
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                startCamera()
+                readResultFromFile()
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -93,8 +100,15 @@ class ImageRecognitionFragment : Fragment() {
 
     private fun setObserver() {
         imageRecognitionViewModel.showedItem.observe(viewLifecycleOwner) { result ->
-            binding.fabRetry.visibility = View.VISIBLE
             recognitionAdapter.setData(result)
+        }
+
+        imageRecognitionViewModel.fabRetryVisibility.observe(viewLifecycleOwner) { visibility ->
+            binding.fabRetry.visibility = visibility
+        }
+
+        imageRecognitionViewModel.modelResultLabels.observe(viewLifecycleOwner) { results ->
+            startCamera()
         }
     }
 
@@ -124,9 +138,6 @@ class ImageRecognitionFragment : Fragment() {
                             if (showedItem == "No object is found" || showedItem == "") {
                                 imageRecognitionViewModel.updateData(items)
                             }
-                            else {
-                                binding.fabRetry.visibility = View.GONE
-                            }
                         })
                 }
 
@@ -147,10 +158,24 @@ class ImageRecognitionFragment : Fragment() {
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
-    private fun readResultFromFile(label: String) {
-        val reader = BufferedReader(
-            InputStreamReader(requireActivity().assets.open("labels.txt"))
-        )
+    private fun readResultFromFile() {
+        Observable.create<MutableList<ModelResult>> { subscriber ->
+            val reader =
+                BufferedReader(InputStreamReader(requireActivity().assets.open("labels.txt")))
+            val tempResults = mutableListOf<ModelResult>()
+            var label: List<String>
+            reader.lineSequence().forEach { resultRead ->
+                label = resultRead.split("|")
+                if (!label.isNullOrEmpty()) {
+                    tempResults.add(ModelResult(label[0], label[1]))
+                }
+            }
+            reader.close()
+            subscriber.onNext(tempResults)
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{ imageRecognitionViewModel.setModelResult(it) }
     }
 
     private fun allPermissionsGranted() =
@@ -198,9 +223,6 @@ class ImageRecognitionFragment : Fragment() {
             imageProxy.close()
         }
 
-        /**
-         * Convert Image Proxy to Bitmap
-         */
         private val yuvToRgbConverter = YuvToRgbConverter(ctx)
         private lateinit var bitmapBuffer: Bitmap
         private lateinit var rotationMatrix: Matrix
@@ -245,14 +267,5 @@ class ImageRecognitionFragment : Fragment() {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val MAX_RESULT_DISPLAY = 1
-    }
-
-    fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: (T) -> Unit) {
-        observe(owner, object: Observer<T> {
-            override fun onChanged(value: T) {
-                removeObserver(this)
-                observer(value)
-            }
-        })
     }
 }

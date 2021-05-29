@@ -26,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_16dp"
+            android:visibility="gone"
             android:src="@drawable/ic_retry"
             app:layout_constraintBottom_toTopOf="@id/rv_result"
             app:layout_constraintEnd_toEndOf="parent"

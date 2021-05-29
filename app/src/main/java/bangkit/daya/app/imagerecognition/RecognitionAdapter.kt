@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import bangkit.daya.databinding.RecognitionItemBinding
 import bangkit.daya.model.Recognition
 
-class RecognitionAdapter : RecyclerView.Adapter<RecognitionAdapter.RecognitionViewHolder>() {
+class RecognitionAdapter(private val listener: (placeId: String) -> Unit) : RecyclerView.Adapter<RecognitionAdapter.RecognitionViewHolder>() {
 
     private val items = mutableListOf<Recognition>()
 
@@ -34,6 +34,7 @@ class RecognitionAdapter : RecyclerView.Adapter<RecognitionAdapter.RecognitionVi
 
             fun bind(recognitionItem: Recognition) {
                 recognitionBinding.recognition = recognitionItem
+                recognitionBinding.root.setOnClickListener { listener.invoke(recognitionItem.placeId) }
             }
         }
 }
