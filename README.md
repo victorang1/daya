@@ -25,6 +25,13 @@ daya is a mobile-based application for facilitating users’ discovery of cultur
 - TensorFlow Lite
 - AR Core (Coming soon)
 
+## Machine Learning Structure
+-Image Classification
+Using mobilenet Transfer learning and doing scrapping to get the data to make the model.
+
+-Question And Answer
+Using mobilebert_qa Transfer learning and available data from tensorflow.org to make the model.
+
 ## Setup
 
 To be able login with **Google Account**, you have to download this [file](https://drive.google.com/uc?export=download&id=1Bfgm_KsrQhdkwzHWEyeURxAtoTgl0Az6). After you downloaded the file, put that file inside **app** folder.
@@ -57,6 +64,9 @@ daya/
 	└── PlaceModel.tflite
         └── res/ 		# App resources
 ```
+
+
+
 
 ## Creators
 
