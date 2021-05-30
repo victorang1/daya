@@ -11,46 +11,64 @@
       android:id="@+id/title_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="@dimen/dimen_16dp"
+      android:padding="@dimen/dimen_12dp"
       app:layout_constraintTop_toTopOf="parent"
+      android:fontFamily="@font/comfortaa_regular"
       android:text="@string/tfe_qa_title"
-      android:textStyle="bold"/>
+      android:textStyle="bold"
+      android:textSize="@dimen/text_18sp"/>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:layout_width="match_parent"
       android:layout_height="0dp"
       app:layout_constraintTop_toBottomOf="@id/title_text"
       app:layout_constraintBottom_toTopOf="@id/footer_view">
-    <TextView
-        android:id="@+id/content_text"
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/dimen_16dp"
-        android:scrollbars="vertical"
-        android:text="@string/tfe_qa_content"/>
+        app:cardCornerRadius="@dimen/dimen_6dp"
+        android:padding="@dimen/dimen_8dp"
+        android:layout_margin="@dimen/dimen_8dp">
+
+      <TextView
+          android:id="@+id/content_text"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:padding="@dimen/dimen_16dp"
+          android:scrollbars="vertical"
+          android:textSize="@dimen/text_14sp"
+          android:text="@string/tfe_qa_content"
+          android:background="@drawable/border"/>
+
+    </androidx.cardview.widget.CardView>
+
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/footer_view"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="@dimen/dimen_16dp"
+      android:padding="@dimen/dimen_8dp"
       app:layout_constraintBottom_toBottomOf="parent"
-      android:elevation="@dimen/dimen_16dp"
-      android:background="@android:color/white">
+      android:elevation="@dimen/dimen_8dp">
 
     <TextView
         android:id="@+id/suggestion_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/tfe_qa_you_might_want_to_ask"/>
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/tfe_qa_you_might_want_to_ask"
+        android:textColor="@color/red"
+        android:textSize="@dimen/text_18sp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/suggestion_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/suggestion_text"/>
+        app:layout_constraintTop_toBottomOf="@id/suggestion_text"
+        tools:layout_editor_absoluteX="-133dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_layout"
@@ -75,7 +93,7 @@
         android:id="@+id/ask_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dimen_16dp"
+        android:padding="@dimen/dimen_10dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/text_input_layout"
         app:layout_constraintBottom_toBottomOf="@id/text_input_layout"
