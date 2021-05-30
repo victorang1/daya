@@ -26,11 +26,11 @@ daya is a mobile-based application for facilitating users’ discovery of cultur
 - AR Core (Coming soon)
 
 ## Machine Learning Structure
--Image Classification
-Using mobilenet Transfer learning and doing scrapping to get the data to make the model.
+- Image Classification <br />
+Using mobilenet transfer learning and doing scrapping to get the data to make the model.
 
--Question And Answer
-Using mobilebert_qa Transfer learning and available data from tensorflow.org to make the model.
+- Question And Answer <br />
+Using mobilebert_qa transfer learning and available data from tensorflow.org to make the model.
 
 ## Setup
 
