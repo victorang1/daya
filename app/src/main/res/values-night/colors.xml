@@ -3,4 +3,6 @@
     <color name="tap_target_outer_circle_color">@color/tfe_color_primary_dark</color>
     <color name="tap_target_title_text_color">@color/app_color</color>
     <color name="tap_target_circle_color">@color/app_color</color>
+
+    <color name="tfe_qa_color_highlight">#FF0000</color>
 </resources>
