@@ -29,8 +29,8 @@ class FeatureConverter(
         if (queryTokens.size > maxQueryLen) {
             queryTokens = queryTokens.subList(0, maxQueryLen)
         }
-        val origTokens = Arrays.asList(*context.trim { it <= ' ' }
-            .split("\\s+").toTypedArray())
+        val origTokens = listOf(*context.trim()
+            .split("\\s+".toRegex()).toTypedArray())
         val tokenToOrigIndex: MutableList<Int> = ArrayList()
         var allDocTokens: MutableList<String> = ArrayList()
         for (i in origTokens.indices) {

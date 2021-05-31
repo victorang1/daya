@@ -23,8 +23,9 @@ import kotlin.collections.ArrayList
  * tokenize a String into split subtokens or ids.
  */
 class FullTokenizer(private val dic: Map<String, Int>, doLowerCase: Boolean) {
-    private val basicTokenizer: BasicTokenizer
-    private val wordpieceTokenizer: WordpieceTokenizer
+    private val basicTokenizer: BasicTokenizer = BasicTokenizer(doLowerCase)
+    private val wordpieceTokenizer: WordpieceTokenizer = WordpieceTokenizer(dic)
+
     fun tokenize(text: String?): List<String> {
         val splitTokens: MutableList<String> = ArrayList()
         for (token in basicTokenizer.tokenize(text)) {
@@ -41,8 +42,4 @@ class FullTokenizer(private val dic: Map<String, Int>, doLowerCase: Boolean) {
         return outputIds
     }
 
-    init {
-        basicTokenizer = BasicTokenizer(doLowerCase)
-        wordpieceTokenizer = WordpieceTokenizer(dic)
-    }
 }
