@@ -44,7 +44,7 @@ class ImageRecognitionFragment : Fragment() {
     private lateinit var binding: FragmentImageRecognitionBinding
     private val recognitionAdapter: RecognitionAdapter by lazy {
         RecognitionAdapter {
-            if (it.isNotEmpty() || it != "No object is found") {
+            if (it.isNotEmpty() && it != "No object is found") {
                 val directions =
                     ImageRecognitionFragmentDirections.actionImageRecognitionFragmentToDetailFragment(it)
                 findNavController().navigate(directions)

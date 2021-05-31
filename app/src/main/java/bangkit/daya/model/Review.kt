@@ -11,13 +11,19 @@ data class Review(
     val username: String,
     val createdAt: String,
     val avatar: String,
-    val totalLike: Int,
+    @Bindable
+    var totalLike: Int,
     @Bindable
     var isFavorite: Boolean
-): BaseObservable() {
+) : BaseObservable() {
 
     fun toggleFavorite() {
+        if (isFavorite)
+            totalLike--
+        else
+            totalLike++
         this.isFavorite = !isFavorite
+        notifyPropertyChanged(BR.totalLike)
         notifyPropertyChanged(BR.isFavorite)
         notifyPropertyChanged(BR.btnLikeDrawable)
     }
