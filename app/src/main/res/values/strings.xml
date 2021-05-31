@@ -53,8 +53,8 @@
     <string name="text_menu_scan_nearby">Scan Nearby Places</string>
     <string name="text_question_answer">Question and Answer</string>
 
-    <string name="text_ar_description">This feature let you scan your nearby tourist attraction places and get detail information about it.</string>
-    <string name="text_im_description">This feature let you scan some related object from camera and get the detail information about it.</string>
+    <string name="text_ar_description">This feature lets you scan your nearby tourist attraction places and get detail information about it.</string>
+    <string name="text_im_description">This feature lets you scan some related object from camera and get the detail information about it.</string>
     <string name="text_qna_description">This feature will answer all frequently questions about related place for you.</string>
     <string name="text_movable_information">This button is movable</string>
     <string name="text_information">Information</string>
