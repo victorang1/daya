@@ -235,14 +235,15 @@ class QaClient(private val context: Context) : AutoCloseable {
                 origResults.add(Pos(start, end, startLogits[start] + endLogits[end]))
             }
         }
-        Collections.sort(origResults)
+
+        origResults.sort()
+
         val answers: MutableList<QaAnswer> = ArrayList()
         for (i in origResults.indices) {
             if (i >= PREDICT_ANS_NUM) {
                 break
             }
-            var convertedText: String
-            convertedText = if (origResults[i].start > 0) {
+            var convertedText: String = if (origResults[i].start > 0) {
                 convertBack(feature, origResults[i].start, origResults[i].end)
             } else {
                 ""
