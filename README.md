@@ -40,8 +40,8 @@ daya/
 ├── .gradle/
 ├── .idea/
 ├── app/
-    ├── dayakeystore.keystore
-    └── ...
+│   ├── dayakeystore.keystore
+│   └── ...
 └── ...
 ```
 To run the project use the following command in the Android Studio terminal:
@@ -62,7 +62,7 @@ daya/
         │   ├── model.tflite
         │   └── qa.json
         ├── ml/                 		# Model for Image Classification
-	    └── PlaceModel.tflite
+	│   └── PlaceModel.tflite
         └── res/ 				# App Resources
 
 ```
