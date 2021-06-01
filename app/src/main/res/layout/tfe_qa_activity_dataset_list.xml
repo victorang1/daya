@@ -11,51 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:background="@drawable/border">
 
-            <ImageView
+            <TextView
                 android:id="@+id/letter_q"
-                android:layout_width="@dimen/dimen_100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_100dp"
-                android:layout_marginStart="48dp"
                 android:layout_marginTop="@dimen/dimen_6dp"
                 android:layout_marginBottom="@dimen/dimen_6dp"
-                android:src="@drawable/letter_q_red"
+                android:text="@string/text_qna"
+                android:textSize="64sp"
+                android:textColor="@color/red"
+                android:gravity="center"
+                android:fontFamily="cursive"
+                android:layout_gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="@dimen/dimen_90dp"
-                android:layout_height="@dimen/dimen_90dp"
-                android:layout_toEndOf="@+id/letter_q"
-                android:src="@drawable/ic_and_red"
-                app:layout_anchorGravity="bottom|center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/letter_q"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/letter_a"/>
+                />
 
-            <ImageView
-                android:id="@+id/letter_a"
-                android:layout_width="@dimen/dimen_100dp"
-                android:layout_height="@dimen/dimen_100dp"
-                android:layout_marginTop="@dimen/dimen_6dp"
-                android:layout_marginBottom="@dimen/dimen_6dp"
-                android:layout_marginEnd="@dimen/dimen_48dp"
-                android:src="@drawable/letter_a_red"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.479"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
