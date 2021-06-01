@@ -49,18 +49,18 @@
 
             <TextView
                 android:id="@+id/tv_review"
-                android:layout_width="@dimen/dimen_320dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_6dp"
                 android:background="@android:color/transparent"
                 android:text="@{review.description}"
                 android:textSize="@dimen/text_14sp"
                 android:layout_marginBottom="@dimen/dimen_6dp"
+                android:layout_marginEnd="@dimen/dimen_8dp"
+                app:layout_constraintEnd_toStartOf="@id/btn_like"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/cv_profile"
                 app:layout_constraintTop_toBottomOf="@+id/cv_profile"
-                app:layout_constraintVertical_bias="1.0"
                 tools:text="Candi Borobudur terdiri dari dua juta balok batu vulkanik yang terpahat dengan baik. Masing-masing balok saling mengunci, sehingga candi tetap kokoh sampai sekarang." />
 
             <ImageButton

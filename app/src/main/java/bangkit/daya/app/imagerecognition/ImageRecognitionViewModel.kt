@@ -54,6 +54,6 @@ class ImageRecognitionViewModel : ViewModel() {
     }
 
     companion object {
-        private const val MODEL_THRESHOLD = 0.5
+        private const val MODEL_THRESHOLD = 0.8
     }
 }

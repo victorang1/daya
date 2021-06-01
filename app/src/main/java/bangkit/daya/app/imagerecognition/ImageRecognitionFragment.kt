@@ -25,6 +25,7 @@ import bangkit.daya.ml.PlaceModel
 import bangkit.daya.model.ModelResult
 import bangkit.daya.model.Recognition
 import bangkit.daya.util.YuvToRgbConverter
+import com.google.gson.Gson
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -43,7 +44,7 @@ class ImageRecognitionFragment : Fragment() {
     private lateinit var binding: FragmentImageRecognitionBinding
     private val recognitionAdapter: RecognitionAdapter by lazy {
         RecognitionAdapter {
-            if (it.isNotEmpty() || it != "No object is found") {
+            if (it.isNotEmpty() && it != "No object is found") {
                 val directions =
                     ImageRecognitionFragmentDirections.actionImageRecognitionFragmentToDetailFragment(it)
                 findNavController().navigate(directions)
@@ -134,6 +135,7 @@ class ImageRecognitionFragment : Fragment() {
                         cameraExecutor,
                         ImageAnalyzer(requireContext()) { items ->
                             val showedItem = imageRecognitionViewModel.showedItem.value?.label ?: ""
+                            Log.d("<RESULT>", "startCamera: ${Gson().toJson(items)}")
                             if (showedItem == "No object is found" || showedItem == "") {
                                 imageRecognitionViewModel.updateData(items)
                             }
