@@ -40,7 +40,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         when (v) {
             binding.fabIm -> findNavController().navigate(R.id.action_homeFragment_to_imageRecognitionFragment)
             binding.cvOne -> {
-                Toast.makeText(requireContext(), getString(R.string.text_feature_not_available), Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_homeFragment_to_arFragment)
+//                Toast.makeText(requireContext(), getString(R.string.text_feature_not_available), Toast.LENGTH_SHORT).show()
             }
             binding.cvTwo -> findNavController().navigate(R.id.action_homeFragment_to_datasetListActivity)
         }
