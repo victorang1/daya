@@ -276,7 +276,7 @@ class QaClient(private val context: Context) : AutoCloseable {
         private const val DIC_PATH = "vocab.txt"
         private const val MAX_ANS_LEN = 32
         private const val MAX_QUERY_LEN = 64
-        private const val MAX_SEQ_LEN = 384
+        private const val MAX_SEQ_LEN = 512
         private const val DO_LOWER_CASE = true
         private const val PREDICT_ANS_NUM = 5
         private const val NUM_LITE_THREADS = 4
